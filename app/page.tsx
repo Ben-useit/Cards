@@ -6,7 +6,6 @@ import DashbordPage from './dashboard/page';
 
 export default async function Home() {
   const { userId } = await auth();
-  console.log('home userId', userId);
 
   if (!userId)
     return (

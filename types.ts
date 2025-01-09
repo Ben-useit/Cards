@@ -1,5 +1,5 @@
 export type Card = {
-  id: string;
+  id?: string;
   frontLanguage: string;
   frontItem: string;
   frontPronunciation: string;
