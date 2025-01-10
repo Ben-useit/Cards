@@ -40,7 +40,7 @@ const Navbar = async () => {
         </div>
         <div>
           <div className='float-end'>
-            <Link href='/settings' title='Settings'>
+            <Link href='/about' title='Settings'>
               <SlSettings className='inline size-3' />
             </Link>
 

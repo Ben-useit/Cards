@@ -1,4 +1,4 @@
 const FormLabel = ({ label }: { label: string }) => {
-  return <label>{label}</label>;
+  return <label className='text-right'>{label}</label>;
 };
 export default FormLabel;
