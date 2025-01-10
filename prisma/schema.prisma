@@ -10,16 +10,16 @@ generator client {
 
 model Card {
   id           String     @id @default(uuid())
-  frontLanguage        String
+  frontLanguage         String
   frontItem     String
-  frontPronunciation String
-  frontExample   String
+  frontPronunciation    String?
+  frontExample   String?
   frontStatus Int
   frontDate DateTime   @default(now())
   backLanguage        String
   backItem    String
-  backPronunciation String
-  backExample   String
+  backPronunciation String?
+  backExample   String?
   backStatus Int
   backDate    DateTime   @default(now())
   userId  String

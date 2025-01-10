@@ -2,13 +2,13 @@ export type Card = {
   id?: string;
   frontLanguage: string;
   frontItem: string;
-  frontPronunciation: string;
-  frontExample: string;
+  frontPronunciation?: string | null | undefined;
+  frontExample?: string | null | undefined;
   frontStatus: number;
   backLanguage: string;
   backItem: string;
-  backPronunciation: string;
-  backExample: string;
+  backPronunciation?: string | null | undefined;
+  backExample?: string | null | undefined;
   backStatus: number;
   userId: string;
 };

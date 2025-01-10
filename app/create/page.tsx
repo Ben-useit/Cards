@@ -23,20 +23,16 @@ const CreateCard = () => {
           <h2 className='col-span-2'>Front Side</h2>
 
           <FormLabel label='Word' />
-          <InputField type='text' name='frontItem' defaultValue='Item1' />
+          <InputField type='text' name='frontItem' />
           <FormLabel label='Example' />
-          <InputField type='text' name='frontExample' defaultValue='Ex1' />
+          <InputField type='text' name='frontExample' />
           <h2 className='col-span-2'>Back Side</h2>
           <FormLabel label='Word' />
-          <InputField type='text' name='backItem' defaultValue='Item2' />
+          <InputField type='text' name='backItem' />
           <FormLabel label='Pronunciation' />
-          <InputField
-            type='text'
-            name='backPronunciation'
-            defaultValue='Pron2'
-          />
+          <InputField type='text' name='backPronunciation' />
           <FormLabel label='Example' />
-          <InputField type='text' name='backExample' defaultValue='Ex2' />
+          <InputField type='text' name='backExample' />
           <button
             type='submit'
             className='col-span-2 float-end rounded-md p-2 bg-green-400'

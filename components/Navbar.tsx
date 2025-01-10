@@ -10,7 +10,7 @@ const Navbar = async () => {
   if (userId) {
     return (
       <nav className='grid grid-cols-[15%_70%_15%] border-b'>
-        <div>
+        <div className='m-1'>
           <Link href='/' title='Home'>
             <Image src={logo} alt='logo' className='h-4' />
           </Link>
@@ -19,21 +19,21 @@ const Navbar = async () => {
           <Link
             href='/create'
             title='Create'
-            className='px-3 rounded-md text-xs  hover:bg-blueColor hover:text-white'
+            className='px-3 rounded-md text-lg  hover:bg-blueColor hover:text-white'
           >
             New
           </Link>
           <Link
             href='/learn'
             title='Learn'
-            className='px-3 rounded-md text-xs hover:bg-blueColor hover:text-white'
+            className='px-3 rounded-md text-lg hover:bg-blueColor hover:text-white'
           >
             Learn
           </Link>
           <Link
             href='/repeat'
             title='Repeat'
-            className='px-3 rounded-md text-xs hover:bg-blueColor hover:text-white'
+            className='px-3 rounded-md text-lg hover:bg-blueColor hover:text-white'
           >
             Repeat
           </Link>

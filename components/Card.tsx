@@ -43,15 +43,15 @@ const Card = ({
   const remainingCards = count - (count - correctAnswers - falseAnswers) + 1;
   return (
     <>
-      <div className='sm:w-[600px] border-2 rounded-md shadow-xl p-6 bg-gray-50'>
+      <div className='w-all border-2 rounded-md shadow-xl p-6 bg-gray-50'>
         <div className='grid grid-cols-2'>
           <div>
             {isFront || (
-              <>
+              <div className='float-start'>
                 <button type='button' onClick={() => setIsFront(true)}>
-                  <SlArrowLeft color='#fde047' className='float-start' />
+                  <SlArrowLeft color='#fde047' />
                 </button>
-              </>
+              </div>
             )}
           </div>
 
@@ -83,7 +83,7 @@ const Card = ({
                 <button
                   type='button'
                   onClick={() => setIsFront(false)}
-                  className='w-24 border float-end text-2-xl rounded-md p-2 bg-yellow-300'
+                  className='w-22 border float-end rounded-md p-2 bg-yellow-300'
                 >
                   Next
                 </button>
@@ -95,14 +95,14 @@ const Card = ({
                     <button
                       type='button'
                       onClick={() => handleAnswer(true)}
-                      className='text-white w-24 border text-2-xl rounded-md p-2 bg-green-500'
+                      className='text-white w-22 border rounded-md p-2 bg-green-500'
                     >
                       Correct
                     </button>
                     <button
                       type='button'
                       onClick={() => handleAnswer(false)}
-                      className='text-white w-24 border text-2-xl rounded-md p-2 ml-2 bg-red-500'
+                      className='text-white w-22 border rounded-md p-2 ml-2 bg-red-500'
                     >
                       False
                     </button>

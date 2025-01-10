@@ -5,7 +5,7 @@ const InputField = ({
 }: {
   type: string;
   name: string;
-  defaultValue: string;
+  defaultValue?: string;
 }) => {
   return (
     <input

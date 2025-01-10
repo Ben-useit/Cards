@@ -3,7 +3,6 @@ import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '@/components/Navbar';
 import { ClerkProvider } from '@clerk/nextjs';
-import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: 'Cards',
@@ -17,18 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body>
-        <main className='max-w-3xl mx-auto py-3'>
-          <ClerkProvider>
-            <div className='mx-auto min-w-96 max-w-6xl xl:max-w-7xl px-6'>
-              <Navbar />
-              <ToastContainer />
-              <div className='flex flex-col sm:flex-row  justify-center items-center flex-wrap gap-4 py-8'>
-                {children}
-              </div>
-            </div>
-          </ClerkProvider>
-        </main>
+      <body className='mx-auto w-4/5 text-center mt-4'>
+        <ClerkProvider>
+          <Navbar />
+          <main className='mt-4'>{children}</main>
+        </ClerkProvider>
       </body>
     </html>
   );
