@@ -1,0 +1,107 @@
+[
+  {
+    "frontLanguage": "German",
+    "frontItem": "verblüffend",
+    "frontPronunciation": "",
+    "frontExample": "Das Ergebnis war verblüffend.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "astonishing",
+    "backPronunciation": "/əˈstɒnɪʃɪŋ/",
+    "backExample": "The result was astonishing.",
+    "backStatus": 0,
+    "userId": "12345"
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "Schwermut",
+    "frontPronunciation": "",
+    "frontExample": "Seine Schwermut war offensichtlich.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "melancholy",
+    "backPronunciation": "/ˈmɛlənkɒli/",
+    "backExample": "His melancholy was evident.",
+    "backStatus": 0,
+    "userId": "12345"
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "unvermeidlich",
+    "frontPronunciation": "",
+    "frontExample": "Der Konflikt war unvermeidlich.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "inevitable",
+    "backPronunciation": "/ɪˈnɛvɪtəbl/",
+    "backExample": "The conflict was inevitable.",
+    "backStatus": 0,
+    "userId": "12345"
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "verworren",
+    "frontPronunciation": "",
+    "frontExample": "Die Situation war verworren.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "convoluted",
+    "backPronunciation": "/ˈkɒnvəˌluːtɪd/",
+    "backExample": "The situation was convoluted.",
+    "backStatus": 0,
+    "userId": "12345"
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "ernüchternd",
+    "frontPronunciation": "",
+    "frontExample": "Die Wahrheit war ernüchternd.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "disillusioning",
+    "backPronunciation": "/ˌdɪsɪˈluːʒənɪŋ/",
+    "backExample": "The truth was disillusioning.",
+    "backStatus": 0,
+    "userId": "12345"
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "beeindruckend",
+    "frontPronunciation": "",
+    "frontExample": "Ihre Rede war beeindruckend.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "impressive",
+    "backPronunciation": "/ɪmˈprɛsɪv/",
+    "backExample": "Her speech was impressive.",
+    "backStatus": 0,
+    "userId": "12345"
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "entschlossen",
+    "frontPronunciation": "",
+    "frontExample": "Er war entschlossen, sein Ziel zu erreichen.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "determined",
+    "backPronunciation": "/dɪˈtɜːmɪnd/",
+    "backExample": "He was determined to achieve his goal.",
+    "backStatus": 0,
+    "userId": "12345"
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "unermesslich",
+    "frontPronunciation": "",
+    "frontExample": "Der Reichtum des Königs war unermesslich.",
+    "frontStatus": 0,
+    "backLanguage": "English",
+    "backItem": "immeasurable",
+    "backPronunciation": "/ɪˈmɛʒərəbl/",
+    "backExample": "The king's wealth was immeasurable.",
+    "backStatus": 0,
+    "userId": "12345"
+  }
+]
+

@@ -1,12 +1,20 @@
 import Link from 'next/link';
 import SignOutLink from './SignOutLink';
-import { SlSettings } from 'react-icons/sl';
 import { auth } from '@clerk/nextjs/server';
 import SignInLink from './SignInLink';
 import Image from 'next/image';
 import logo from '@/public/logo2.svg';
+import Dropdown from './Dropdown';
+import { LinkType } from '@/types';
+
+const links: LinkType[] = [
+  { label: 'Load new', url: '/load' },
+  { label: 'Stats', url: '/dashboard' },
+  { label: 'About', url: '/about' },
+];
 const Navbar = async () => {
   const { userId } = await auth();
+
   if (userId) {
     return (
       <nav className='grid grid-cols-[15%_70%_15%] border-b'>
@@ -17,21 +25,21 @@ const Navbar = async () => {
         </div>
         <div className='mx-auto px-2'>
           <Link
-            href='/create'
+            href='/card/create'
             title='Create'
             className='px-3 rounded-md text-lg  hover:bg-blueColor hover:text-white'
           >
             New
           </Link>
           <Link
-            href='/learn'
+            href='/card/learn'
             title='Learn'
             className='px-3 rounded-md text-lg hover:bg-blueColor hover:text-white'
           >
             Learn
           </Link>
           <Link
-            href='/repeat'
+            href='/card/repeat'
             title='Repeat'
             className='px-3 rounded-md text-lg hover:bg-blueColor hover:text-white'
           >
@@ -40,9 +48,10 @@ const Navbar = async () => {
         </div>
         <div>
           <div className='float-end'>
-            <Link href='/about' title='Settings'>
+            {/* <Link href='/about' title='Settings'>
               <SlSettings className='inline size-3' />
-            </Link>
+            </Link> */}
+            <Dropdown links={links} />
 
             <SignOutLink />
           </div>

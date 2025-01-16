@@ -5,22 +5,31 @@ import { updateStatus } from '@/utils/actions';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SlArrowLeft, SlClose } from 'react-icons/sl';
+import { TfiPencilAlt } from 'react-icons/tfi';
 import ResultModal from './ResultModal';
+import { redirect } from 'next/navigation';
 
 const Card = ({
   cards,
   repeat,
   count,
+  showedFront,
+  correctA,
+  falseA,
 }: {
   cards: Card[];
   repeat: boolean;
   count: number;
+  showedFront?: boolean;
+  correctA?: number;
+  falseA?: number;
 }) => {
-  const [isFront, setIsFront] = useState(true);
+  const initialShowFront = showedFront === undefined ? true : showedFront;
+  const [isFront, setIsFront] = useState(initialShowFront);
   const [cardList, setCardList] = useState(cards);
   const [card, setCard] = useState(cardList[0]);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [falseAnswers, setFalseAnswers] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(correctA || 0);
+  const [falseAnswers, setFalseAnswers] = useState(falseA || 0);
 
   const handleAnswer = (answer: boolean) => {
     const newCardList = cardList.filter((c) => c.id != card.id);
@@ -30,6 +39,19 @@ const Card = ({
     if (answer) setCorrectAnswers(correctAnswers + 1);
     else setFalseAnswers(falseAnswers + 1);
     if (repeat) updateStatus(answer, card);
+  };
+
+  const handleEdit = () => {
+    const currentStatus = {
+      isFront: isFront,
+      repeat: repeat,
+      correctAnswers: correctAnswers,
+      falseAnswers: falseAnswers,
+      totalCards: count,
+      cardList: cardList,
+    };
+    localStorage.setItem('status', JSON.stringify(currentStatus));
+    redirect('/card/edit');
   };
 
   if (!card) {
@@ -43,7 +65,7 @@ const Card = ({
   const remainingCards = count - (count - correctAnswers - falseAnswers) + 1;
   return (
     <>
-      <div className='w-all border-2 rounded-md shadow-xl p-6 bg-gray-50'>
+      <div className='w-auto md:w-[70%] lg:w-1/2 mx-auto border-2 rounded-md shadow-xl p-6 bg-gray-50'>
         <div className='grid grid-cols-2'>
           <div>
             {isFront || (
@@ -58,6 +80,9 @@ const Card = ({
           <div>
             <Link href='/' className='inline float-end'>
               <SlClose color='red' className='mt-1' />
+            </Link>
+            <Link href='#' onClick={handleEdit} className='inline  float-end'>
+              <TfiPencilAlt className='mt-1 mx-2' />
             </Link>
           </div>
         </div>
@@ -83,7 +108,7 @@ const Card = ({
                 <button
                   type='button'
                   onClick={() => setIsFront(false)}
-                  className='w-22 border float-end rounded-md p-2 bg-yellow-300'
+                  className='w-32 border float-end rounded-md p-2 bg-yellow-300'
                 >
                   Next
                 </button>

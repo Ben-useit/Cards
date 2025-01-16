@@ -12,3 +12,8 @@ export type Card = {
   backStatus: number;
   userId: string;
 };
+
+export type LinkType = {
+  label: string;
+  url: string;
+};

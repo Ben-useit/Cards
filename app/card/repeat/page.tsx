@@ -12,7 +12,7 @@ const RepeatPage = async () => {
   const cards: Card[] = await prisma.card.findMany({
     where: {
       userId: userId as string,
-      frontStatus: { lt: 6 },
+      frontStatus: { lt: 6, gte: 0 },
       frontDate: { lte: today },
     },
   });

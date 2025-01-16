@@ -1,13 +1,29 @@
 'use client';
+import CardForm from '@/components/CardForm';
 import FormLabel from '@/components/FormLabel';
 import InputField from '@/components/InputField';
 import TextArea from '@/components/TextArea';
 import { createCard } from '@/utils/actions';
-import { useActionState } from 'react';
+import { redirect } from 'next/navigation';
+import { useActionState, useState } from 'react';
 import { CiCircleCheck } from 'react-icons/ci';
 
 const CreateCard = () => {
   const [message, formAction, isPending] = useActionState(createCard, null);
+  const [canceled, setCanceled] = useState(false);
+  const cancelAction = () => {
+    setCanceled(true);
+    redirect('/');
+  };
+  return (
+    <CardForm
+      isPending={isPending}
+      message={message}
+      formAction={formAction}
+      cancelAction={cancelAction}
+      canceled={canceled}
+    />
+  );
   return (
     <div className='mx-auto md:w-[700px]'>
       <div className='text-center'>
