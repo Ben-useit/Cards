@@ -4,7 +4,13 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { SlSettings } from 'react-icons/sl';
 
-const Dropdown = ({ links }: { links: LinkType[] }) => {
+const Dropdown = ({
+  links,
+  className,
+}: {
+  links: LinkType[];
+  className: string;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -18,11 +24,8 @@ const Dropdown = ({ links }: { links: LinkType[] }) => {
   return (
     <div className='relative inline'>
       {/* Settings Icon */}
-      <button
-        onClick={toggleDropdown}
-        className='px-3 rounded-full hover:bg-blueColor hover:text-white'
-      >
-        <SlSettings className='inline size-3' />
+      <button onClick={toggleDropdown} className={className}>
+        <SlSettings className='inline ' />
       </button>
 
       {/* Dropdown Menu */}

@@ -7,7 +7,7 @@ const SignOutLink = () => {
     <>
       <SignOutButton>
         <Link href='/'>
-          <SlUser className='inline m-2 size-3' />
+          <SlUser className='inline' />
         </Link>
       </SignOutButton>
     </>
