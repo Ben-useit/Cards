@@ -1,13 +1,13 @@
 import { SignOutButton } from '@clerk/nextjs';
 import Link from 'next/link';
-import { SlUser } from 'react-icons/sl';
 
-const SignOutLink = () => {
+const SignOutLink = ({ className }: { className?: string }) => {
   return (
     <>
       <SignOutButton>
-        <Link href='/'>
-          <SlUser className='inline' />
+        <Link href='/' className={className}>
+          {/* <SlUser className='inline' /> */}
+          Sign Out
         </Link>
       </SignOutButton>
     </>

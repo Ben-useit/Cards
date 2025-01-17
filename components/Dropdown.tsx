@@ -3,15 +3,18 @@ import { LinkType } from '@/types';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { RiArrowDropDownFill } from 'react-icons/ri';
+import { SlOptionsVertical } from 'react-icons/sl';
 
 const Dropdown = ({
   links,
   className,
   label,
+  AuthButton,
 }: {
   links: LinkType[];
   className: string;
   label?: string;
+  AuthButton?: React.ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,8 +31,14 @@ const Dropdown = ({
       {/* Settings Icon */}
 
       <button onClick={toggleDropdown} className={className}>
-        {label}
-        <RiArrowDropDownFill className='inline ' />
+        {label ? (
+          <>
+            {label}
+            <RiArrowDropDownFill className='inline ' />
+          </>
+        ) : (
+          <SlOptionsVertical className='inline ' />
+        )}
       </button>
 
       {/* Dropdown Menu */}
@@ -48,6 +57,7 @@ const Dropdown = ({
                 </Link>
               );
             })}
+            {AuthButton && AuthButton}
           </div>
         </div>
       )}

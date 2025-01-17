@@ -16,14 +16,15 @@ const links: LinkType[] = [
 const Navbar = async () => {
   return (
     <div>
-      <nav className='grid grid-cols-[15%_60%_25%] border-b'>
-        <div className=''>
+      <nav className='grid grid-cols-[15%_70%_15%] border-b'>
+        {/* <nav className='grid grid-cols-3 border-b items-center'> */}
+        <div className='border'>
           <Link href='/' title='Home'>
             <Image src={logo} alt='logo' className='pb-2' />
           </Link>
         </div>
         <SignedIn>
-          <div className='mx-auto'>
+          <div className='mx-auto border'>
             <Link
               href='/card/create'
               title='Create'
@@ -54,16 +55,15 @@ const Navbar = async () => {
               label='Repeat'
             />
           </div>
-          <div>
+          <div className='border'>
             <div className='float-end'>
               <Dropdown
                 links={links}
                 className={`pb-1 ${linkStyle}`}
-                label='Settings'
+                AuthButton={
+                  <SignOutLink className='block px-4 py-2 text-gray-700 hover:bg-gray-100' />
+                }
               />
-              <button className={`pb-1 ${linkStyle}`}>
-                <SignOutLink />
-              </button>
             </div>
           </div>
         </SignedIn>
@@ -83,12 +83,7 @@ const Navbar = async () => {
     </div>
   );
 };
-// return (
-//   <div className='float-end'>
-//     <SignInLink />
-//   </div>
-// );
-//};
+
 export default Navbar;
 
 const linkStyle = 'px-3 rounded-md hover:bg-blueColor hover:text-white';
