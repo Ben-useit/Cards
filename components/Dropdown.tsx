@@ -2,14 +2,16 @@
 import { LinkType } from '@/types';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { SlSettings } from 'react-icons/sl';
+import { RiArrowDropDownFill } from 'react-icons/ri';
 
 const Dropdown = ({
   links,
   className,
+  label,
 }: {
   links: LinkType[];
   className: string;
+  label?: string;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,8 +26,10 @@ const Dropdown = ({
   return (
     <div className='relative inline'>
       {/* Settings Icon */}
+
       <button onClick={toggleDropdown} className={className}>
-        <SlSettings className='inline ' />
+        {label}
+        <RiArrowDropDownFill className='inline ' />
       </button>
 
       {/* Dropdown Menu */}

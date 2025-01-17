@@ -12,6 +12,7 @@ const links: LinkType[] = [
   { label: 'Stats', url: '/dashboard' },
   { label: 'About', url: '/about' },
 ];
+
 const Navbar = async () => {
   return (
     <div>
@@ -37,18 +38,29 @@ const Navbar = async () => {
             >
               Learn
             </Link>
-            <Link
+            {/* <Link
               href='/card/repeat'
               title='Repeat'
               className={`py-1 pb-1 ${linkStyle}`}
             >
               Repeat
-            </Link>
+            </Link> */}
+            <Dropdown
+              links={[
+                { label: 'Repeat Words', url: '/card/repeat' },
+                { label: 'Repeat Examples', url: '/card/examples' },
+              ]}
+              className={`pb-1 ${linkStyle}`}
+              label='Repeat'
+            />
           </div>
           <div>
             <div className='float-end'>
-              <Dropdown links={links} className={`pb-1 ${linkStyle}`} />
-
+              <Dropdown
+                links={links}
+                className={`pb-1 ${linkStyle}`}
+                label='Settings'
+              />
               <button className={`pb-1 ${linkStyle}`}>
                 <SignOutLink />
               </button>
@@ -61,6 +73,7 @@ const Navbar = async () => {
               <Dropdown
                 links={[{ label: 'About', url: '/about' }]}
                 className={`pb-1 ${linkStyle}`}
+                label='Settings'
               />
               <SignInLink className={`pb-1 ${linkStyle}`} />
             </div>
