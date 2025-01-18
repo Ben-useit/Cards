@@ -39,6 +39,7 @@ const CardEditForm = ({ card }: { card: Card }) => {
       formAction={formAction}
       cancelAction={cancelAction}
       canceled={canceled}
+      label='Edit Card'
     />
   );
 

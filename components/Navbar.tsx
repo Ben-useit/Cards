@@ -17,14 +17,13 @@ const Navbar = async () => {
   return (
     <div>
       <nav className='grid grid-cols-[15%_70%_15%] border-b'>
-        {/* <nav className='grid grid-cols-3 border-b items-center'> */}
-        <div className='border'>
+        <div>
           <Link href='/' title='Home'>
             <Image src={logo} alt='logo' className='pb-2' />
           </Link>
         </div>
         <SignedIn>
-          <div className='mx-auto border'>
+          <div className='mx-auto '>
             <Link
               href='/card/create'
               title='Create'
@@ -49,13 +48,13 @@ const Navbar = async () => {
             <Dropdown
               links={[
                 { label: 'Repeat Words', url: '/card/repeat' },
-                { label: 'Repeat Examples', url: '/card/examples' },
+                { label: 'Repeat Examples', url: '/card/repeat/examples' },
               ]}
               className={`pb-1 ${linkStyle}`}
               label='Repeat'
             />
           </div>
-          <div className='border'>
+          <div>
             <div className='float-end'>
               <Dropdown
                 links={links}

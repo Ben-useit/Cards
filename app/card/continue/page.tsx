@@ -26,6 +26,7 @@ const LearnContinuePage = () => {
       showedFront={status.isFront}
       correctA={status.correctAnswers}
       falseA={status.falseAnswers}
+      examplesOnly={false}
     />
   );
 };

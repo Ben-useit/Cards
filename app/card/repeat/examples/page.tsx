@@ -3,15 +3,16 @@ import prisma from '@/utils/db';
 import { auth } from '@clerk/nextjs/server';
 import { shuffle } from '@/utils/shuffle';
 import NothingToDo from '@/components/NothingToDo';
-const LearnPage = async () => {
+
+const RepeatExamplesPage = async () => {
   const today = new Date();
-  today.setHours(23, 59, 59, 999);
+  today.setHours(0, 0, 0, 0);
 
   const { userId } = await auth();
   const cards: Card[] = await prisma.card.findMany({
     where: {
       userId: userId as string,
-      frontStatus: { equals: 0 },
+      frontStatus: { gte: 6 },
       frontDate: { lte: today },
     },
   });
@@ -25,9 +26,9 @@ const LearnPage = async () => {
         cards={cards}
         repeat={false}
         count={cards.length}
-        examplesOnly={false}
+        examplesOnly={true}
       />
     </div>
   );
 };
-export default LearnPage;
+export default RepeatExamplesPage;

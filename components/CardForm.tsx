@@ -12,6 +12,7 @@ const CardForm = ({
   isPending,
   cancelAction,
   canceled,
+  label,
 }: {
   card?: Card;
   message?: string | null;
@@ -19,11 +20,12 @@ const CardForm = ({
   isPending: boolean;
   cancelAction: () => void;
   canceled: boolean;
+  label: string;
 }) => {
   return (
-    <div className='mx-auto md:w-[700px]'>
+    <div className='mx-auto '>
       <div className='text-center'>
-        <h2 className='inline'>Edit card</h2>
+        <h2 className='inline'>{label}</h2>
         {message && (
           <h4 className='text-center text-xs text-green-500'>
             {message}
@@ -32,7 +34,7 @@ const CardForm = ({
         )}
       </div>
       <form action={formAction}>
-        <div className='grid grid-cols-[30%_70%] gap-4 mx-8 border justify-end rounded-md p-6 shadow-xl  bg-gray-50'>
+        <div className='grid grid-cols-[30%_70%] gap-4 border justify-end rounded-md p-6 shadow-xl  bg-gray-50'>
           <input type='hidden' name='id' value={card?.id || ''} />
           <h2 className='col-span-2'>Front Side</h2>
           <FormLabel label='Word' />
@@ -75,7 +77,7 @@ const CardForm = ({
             <button
               type='submit'
               disabled={isPending}
-              className={`rounded-md p-2  w-1/4 mr-2 ${
+              className={`rounded-md p-2  w-1/4 ${
                 isPending ? 'bg-gray-200' : 'bg-green-400'
               } `}
             >

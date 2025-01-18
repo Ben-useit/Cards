@@ -22,7 +22,12 @@ const RepeatPage = async () => {
   shuffle<Card>(cards);
   return (
     <div>
-      <Card cards={cards} repeat={true} count={cards.length} />
+      <Card
+        cards={cards}
+        repeat={true}
+        count={cards.length}
+        examplesOnly={false}
+      />
     </div>
   );
 };

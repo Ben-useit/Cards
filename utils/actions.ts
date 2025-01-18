@@ -61,6 +61,17 @@ export const updateStatus = async (response: boolean, card: Card) => {
   });
 };
 
+export const updateDate = async (card: Card) => {
+  await prisma.card.update({
+    where: {
+      id: card.id,
+    },
+    data: {
+      frontDate: new Date(),
+    },
+  });
+};
+
 export const getStatusSummary = async () => {
   const summary = await prisma.card.groupBy({
     by: ['frontStatus'],

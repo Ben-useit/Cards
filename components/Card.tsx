@@ -1,7 +1,7 @@
 'use client';
 
 import { type Card } from '@/types';
-import { updateStatus } from '@/utils/actions';
+import { updateStatus, updateDate } from '@/utils/actions';
 import Link from 'next/link';
 import { useState } from 'react';
 import { SlArrowLeft, SlClose } from 'react-icons/sl';
@@ -16,6 +16,7 @@ const Card = ({
   showedFront,
   correctA,
   falseA,
+  examplesOnly,
 }: {
   cards: Card[];
   repeat: boolean;
@@ -23,6 +24,7 @@ const Card = ({
   showedFront?: boolean;
   correctA?: number;
   falseA?: number;
+  examplesOnly: boolean;
 }) => {
   const initialShowFront = showedFront === undefined ? true : showedFront;
   const [isFront, setIsFront] = useState(initialShowFront);
@@ -39,6 +41,7 @@ const Card = ({
     if (answer) setCorrectAnswers(correctAnswers + 1);
     else setFalseAnswers(falseAnswers + 1);
     if (repeat) updateStatus(answer, card);
+    if (examplesOnly && answer) updateDate(card);
   };
 
   const handleEdit = () => {
@@ -81,18 +84,29 @@ const Card = ({
             <Link href='/' className='inline float-end'>
               <SlClose color='red' className='mt-1' />
             </Link>
-            <Link href='#' onClick={handleEdit} className='inline  float-end'>
-              <TfiPencilAlt className='mt-1 mx-2' />
-            </Link>
+            {examplesOnly || (
+              <>
+                {' '}
+                <Link
+                  href='#'
+                  onClick={handleEdit}
+                  className='inline  float-end'
+                >
+                  <TfiPencilAlt className='mt-1 mx-2' />
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <div>
           {' '}
           <h5 className='text-3xl'>
-            {isFront ? card.frontItem : card.backItem}
+            {examplesOnly || <>{isFront ? card.frontItem : card.backItem}</>}
           </h5>
           <p className='text-1xl py-2'>
-            {isFront ? card.frontPronunciation : card.backPronunciation}
+            {examplesOnly || (
+              <>{isFront ? card.frontPronunciation : card.backPronunciation}</>
+            )}
           </p>
           <p className='text-2xl py-2'>
             {isFront ? card.frontExample : card.backExample}
