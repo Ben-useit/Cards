@@ -1,4 +1,4 @@
-const jsonData = require('./dataWords2.json');
+const jsonData = require('./dataWords3.json');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -10,14 +10,33 @@ const fs = require('fs');
 async function main() {
   // Loop through each item in the JSON and insert it into the database
   for (const item of jsonData) {
+    let wordType = '';
+    if (item.frontItemType) {
+      switch (item.frontItemType) {
+        case 'verb':
+          wordType = ' v.';
+          break;
+        case 'adjective':
+          wordType = ' adj.';
+          break;
+        case 'noun':
+          wordType = ' n.';
+          break;
+        case 'adverb':
+          wordType = ' adv.';
+          break;
+        default:
+          wordType = '';
+      }
+    }
     await prisma.card.create({
       data: {
         frontLanguage: item.frontLanguage,
-        frontItem: item.frontItem,
+        frontItem: item.frontItem + wordType,
         frontExample: item.frontExample,
         frontStatus: -1,
         backLanguage: item.backLanguage,
-        backItem: item.backItem,
+        backItem: item.backItem + wordType,
         backPronunciation: item.backPronunciation,
         backExample: item.backExample,
         backStatus: -1,

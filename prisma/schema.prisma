@@ -29,3 +29,10 @@ model User {
   id           String     @id
   sessionID        String
 }
+model LanguagePair {
+  id           String     @id
+  firstLanguage String
+  secondLanguage String
+  selected Boolean
+  userId String
+}

@@ -3,14 +3,33 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const main = async () => {
-  await prisma.card.updateMany({
-    where: {
-      userId: 'userID',
-    },
-    data: {
+  //const data = JSON.parse(products);
+  for (const item of products) {
+    const data = {
+      frontLanguage: 'German',
+      frontItem: item.front,
+      frontExample: item.exampleFront,
+      frontStatus: item.status,
+      backLanguage: 'English',
+      backItem: item.back,
+      backPronunciation: item.pronunciation,
+      backExample: item.exampleBack,
+      backStatus: item.rStatus,
       userId: 'user_2qzFAY5HCsy0nPCb7JwGC7LRwHv',
-    },
-  });
+    };
+    await prisma.card.create({
+      data: data,
+    });
+  }
+
+  // await prisma.card.updateMany({
+  //   where: {
+  //     userId: 'userID',
+  //   },
+  //   data: {
+  //     userId: 'user_2qzFAY5HCsy0nPCb7JwGC7LRwHv',
+  //   },
+  // });
 };
 
 main()

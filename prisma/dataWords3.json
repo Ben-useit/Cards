@@ -1,0 +1,123 @@
+[
+  {
+    "frontLanguage": "German",
+    "frontItem": "verzögern",
+    "frontItemType": "verb",
+    "frontExample": "Der Projektleiter musste den Termin um eine Woche verzögern.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "to delay",
+    "backPronunciation": "/dɪˈleɪ/",
+    "backExample": "The project manager had to delay the deadline by a week.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "unvermeidlich",
+    "frontItemType": "adjective",
+    "frontExample": "Der Unfall war unvermeidlich.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "inevitable",
+    "backPronunciation": "/ɪˈnɛvɪtəbl/",
+    "backExample": "The accident was inevitable.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "Entschlossenheit",
+    "frontItemType": "noun",
+    "frontExample": "Seine Entschlossenheit half ihm, das Ziel zu erreichen.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "determination",
+    "backPronunciation": "/dɪˌtɜːmɪˈneɪʃən/",
+    "backExample": "His determination helped him reach the goal.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "vorübergehend",
+    "frontItemType": "adjective",
+    "frontExample": "Die Störung war nur vorübergehend.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "temporary",
+    "backPronunciation": "/ˈtɛmpərəri/",
+    "backExample": "The disturbance was only temporary.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "herausragend",
+    "frontItemType": "adjective",
+    "frontExample": "Sie hat eine herausragende Leistung gezeigt.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "outstanding",
+    "backPronunciation": "/aʊtˈstændɪŋ/",
+    "backExample": "She showed outstanding performance.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "zerschmettern",
+    "frontItemType": "verb",
+    "frontExample": "Der Sturm zerschmetterte das Fenster.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "to shatter",
+    "backPronunciation": "/ˈʃætər/",
+    "backExample": "The storm shattered the window.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "beständig",
+    "frontItemType": "adjective",
+    "frontExample": "Seine beständigen Bemühungen führten zum Erfolg.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "persistent",
+    "backPronunciation": "/pərˈsɪstənt/",
+    "backExample": "His persistent efforts led to success.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "auftauchen",
+    "frontItemType": "verb",
+    "frontExample": "Er tauchte plötzlich im Raum auf.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "to emerge",
+    "backPronunciation": "/ɪˈmɜːdʒ/",
+    "backExample": "He suddenly emerged in the room.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "stürzen",
+    "frontItemType": "verb",
+    "frontExample": "Das Gebäude stürzte nach dem Erdbeben ein.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "to collapse",
+    "backPronunciation": "/kəˈlæps/",
+    "backExample": "The building collapsed after the earthquake.",
+    "backStatus": -1
+  },
+  {
+    "frontLanguage": "German",
+    "frontItem": "unermüdlich",
+    "frontItemType": "adjective",
+    "frontExample": "Sie arbeitet unermüdlich an ihrem Projekt.",
+    "frontStatus": -1,
+    "backLanguage": "English",
+    "backItem": "tireless",
+    "backPronunciation": "/ˈtaɪələs/",
+    "backExample": "She works tirelessly on her project.",
+    "backStatus": -1
+  }
+]
+
