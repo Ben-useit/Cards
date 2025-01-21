@@ -8,11 +8,11 @@ import { LinkType } from '@/types';
 import { SignedIn, SignedOut } from '@clerk/nextjs';
 
 const links: LinkType[] = [
-  { label: 'Load new', url: '/load' },
-  { label: 'Stats', url: '/dashboard' },
-  { label: 'Select Language', url: '/settings/select' },
-  { label: 'Export Data', url: '/settings/export' },
-  { label: 'About', url: '/about' },
+  { label: 'Load new', url: '/options/load' },
+  { label: 'Stats', url: '/options/stats' },
+  { label: 'Select Language', url: '/options/select' },
+  { label: 'Export Data', url: '/options/export' },
+  { label: 'About', url: '/options/about' },
 ];
 
 const Navbar = async () => {

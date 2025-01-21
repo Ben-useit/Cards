@@ -15,7 +15,7 @@ const LearnPage = async () => {
       frontDate: { lte: today },
     },
   });
-  if (cards.length === 0) {
+  if (cards.length !== 0) {
     return <NothingToDo />;
   }
   shuffle<Card>(cards);
