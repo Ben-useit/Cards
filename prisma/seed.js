@@ -2,7 +2,7 @@ const products = require('./data.json');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const main = async () => {
+const main2 = async () => {
   //const data = JSON.parse(products);
   for (const item of products) {
     const data = {
@@ -30,6 +30,17 @@ const main = async () => {
   //     userId: 'user_2qzFAY5HCsy0nPCb7JwGC7LRwHv',
   //   },
   // });
+};
+
+const main = async () => {
+  await prisma.languagePair.create({
+    data: {
+      firstLanguage: 'German',
+      secondLanguage: 'French',
+      selected: false,
+      userId: 'user_2qzFAY5HCsy0nPCb7JwGC7LRwHv',
+    },
+  });
 };
 
 main()

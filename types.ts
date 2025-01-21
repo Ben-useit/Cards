@@ -17,3 +17,10 @@ export type LinkType = {
   label: string;
   url: string;
 };
+
+export type LanguagePair = {
+  id: string;
+  firstLanguage: string;
+  secondLanguage: string;
+  selected: boolean;
+};

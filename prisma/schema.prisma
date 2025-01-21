@@ -30,7 +30,7 @@ model User {
   sessionID        String
 }
 model LanguagePair {
-  id           String     @id
+  id           String     @id @default(uuid())
   firstLanguage String
   secondLanguage String
   selected Boolean

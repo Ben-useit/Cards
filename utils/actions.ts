@@ -1,9 +1,28 @@
 'use server';
-import { Card } from '@/types';
-import prisma from './db';
+import { Card, LanguagePair } from '@/types';
+//import prisma from './db';
+import prisma from '@/utils/db';
 import { allStatuses } from '@/defaults';
 import { auth } from '@clerk/nextjs/server';
 import { shuffle } from './shuffle';
+
+export const getAllCards = async () => {
+  const { userId } = await auth();
+  const cards: Card[] = await prisma.card.findMany({
+    where: {
+      userId: userId as string,
+    },
+  });
+  return cards;
+};
+export const getLanguages = async () => {
+  const { userId } = await auth();
+  console.log(userId);
+  const pairs: LanguagePair[] = await prisma.languagePair.findMany({
+    where: { userId: userId as string },
+  });
+  return pairs;
+};
 
 export const updateCard = async (someState: any, formData: FormData) => {
   const {
