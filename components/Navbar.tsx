@@ -6,6 +6,8 @@ import logo from '@/public/logo2.svg';
 import Dropdown from './Dropdown';
 import { LinkType } from '@/types';
 import { SignedIn, SignedOut } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs/server';
+import { getMetadata } from '@/utils/metadata';
 
 const links: LinkType[] = [
   { label: 'Load new', url: '/options/load' },
@@ -16,6 +18,9 @@ const links: LinkType[] = [
 ];
 
 const Navbar = async () => {
+  const { userId } = await auth();
+  const { label } = await getMetadata(userId);
+
   return (
     <div>
       <nav className='grid grid-cols-[15%_70%_15%] border-b'>
@@ -58,6 +63,7 @@ const Navbar = async () => {
           </div>
           <div>
             <div className='float-end'>
+              <div className='inline'>{label as string}</div>
               <Dropdown
                 links={links}
                 className={`pb-1 ${linkStyle}`}

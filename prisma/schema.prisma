@@ -23,6 +23,7 @@ model Card {
   backStatus Int
   backDate    DateTime   @default(now())
   userId  String
+  language String @default("")
 }
 
 model User {
@@ -33,6 +34,7 @@ model LanguagePair {
   id           String     @id @default(uuid())
   firstLanguage String
   secondLanguage String
+  label String @default("")
   selected Boolean
   userId String
 }

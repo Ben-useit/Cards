@@ -23,4 +23,5 @@ export type LanguagePair = {
   firstLanguage: string;
   secondLanguage: string;
   selected: boolean;
+  label: string;
 };

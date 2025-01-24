@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '@/components/Navbar';
-import { ClerkProvider } from '@clerk/nextjs';
+import Nav from '@/components/Nav';
+import { ClerkProvider, SignedIn, SignedOut } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
   title: 'Cards',
@@ -18,7 +19,12 @@ export default function RootLayout({
     <html lang='en'>
       <body className='mx-auto w-4/5 text-center mt-4'>
         <ClerkProvider>
-          <Navbar />
+          <SignedIn>
+            <Navbar />
+          </SignedIn>
+          <SignedOut>
+            <Nav />
+          </SignedOut>
           <main className='mt-4'>{children}</main>
         </ClerkProvider>
       </body>

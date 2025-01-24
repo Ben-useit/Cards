@@ -1,10 +1,94 @@
 'use server';
 import { Card, LanguagePair } from '@/types';
-//import prisma from './db';
 import prisma from '@/utils/db';
 import { allStatuses } from '@/defaults';
 import { auth } from '@clerk/nextjs/server';
-import { shuffle } from './shuffle';
+import { redirect } from 'next/navigation';
+import { shuffle } from '@/utils/shuffle';
+import { deleteMetadata, getMetadata, setMetadata } from './metadata';
+import { hasEmptyEntries, hasIndexDuplicates } from './validate';
+
+export type ActionState = {
+  message: string;
+  payload?: FormData;
+};
+
+export const setLanguage = async (
+  someState: ActionState,
+  formData: FormData
+) => {
+  const { userId } = await auth();
+  if (!userId) redirect('/');
+  const label = formData.getAll('label') as string[];
+  const id = formData.getAll('id') as string[];
+  const firstLanguage = formData.getAll('firstLanguage') as string[];
+  const secondLanguage = formData.getAll('secondLanguage') as string[];
+  const selected = formData.getAll('selected') as string[];
+
+  const { error, message } = hasEmptyEntries(
+    [id, label, firstLanguage, secondLanguage],
+    selected[0]
+  );
+  if (error) {
+    return { message: message, payload: formData };
+  }
+
+  const result = hasIndexDuplicates(firstLanguage, secondLanguage);
+  if (result.error) return { message: result.message, payload: formData };
+
+  const existingRecordIds = id.filter((element) => element !== '');
+
+  //Save the data, update existing ones, create new ones.
+  for (const [index, element] of existingRecordIds.entries()) {
+    await prisma.languagePair.update({
+      where: { id: element },
+      data: {
+        label: label[index],
+        firstLanguage: firstLanguage[index],
+        secondLanguage: secondLanguage[index],
+        selected: selected[0] === element,
+      },
+    });
+  }
+
+  // save new entry if exists
+  const indexOfNewRecord = existingRecordIds.length;
+  if (label[indexOfNewRecord] !== '') {
+    const isSelected = selected[0] === 'new';
+    await prisma.languagePair.create({
+      data: {
+        label: label[indexOfNewRecord],
+        firstLanguage: firstLanguage[indexOfNewRecord],
+        secondLanguage: secondLanguage[indexOfNewRecord],
+        selected: isSelected,
+        userId: userId,
+      },
+    });
+  }
+  await deleteMetadata(userId);
+  redirect('/options/select');
+  //revalidatePath('/options/select');
+  return { message: 'All Ok.', payload: formData };
+};
+
+export const getCards = async (repeat?: boolean) => {
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  const { userId } = await auth();
+  if (!userId) return [];
+  const { langId } = await getMetadata(userId);
+  const status = repeat ? { lt: 6, gte: 0 } : { equals: 0 };
+  const cards: Card[] = await prisma.card.findMany({
+    where: {
+      userId: userId as string,
+      frontStatus: status,
+      frontDate: { lte: today },
+      language: langId,
+    },
+  });
+  shuffle<Card>(cards);
+  return cards;
+};
 
 export const getAllCards = async () => {
   const { userId } = await auth();
@@ -17,11 +101,21 @@ export const getAllCards = async () => {
 };
 export const getLanguages = async () => {
   const { userId } = await auth();
-  console.log(userId);
   const pairs: LanguagePair[] = await prisma.languagePair.findMany({
     where: { userId: userId as string },
   });
   return pairs;
+};
+
+export const getSelectedLanguage = async (userId: string | null) => {
+  if (!userId) return null;
+  const language = await prisma.languagePair.findFirst({
+    where: {
+      userId: userId,
+      selected: true,
+    },
+  });
+  return language;
 };
 
 export const updateCard = async (someState: any, formData: FormData) => {
