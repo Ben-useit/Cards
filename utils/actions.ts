@@ -208,6 +208,8 @@ export const getStatusSummary = async () => {
 
 export const createCard = async (someState: any, formData: FormData) => {
   const { userId } = await auth();
+  const { langId } = await getMetadata(userId);
+
   const { frontItem, frontExample, backItem, backPronunciation, backExample } =
     Object.fromEntries(formData);
 
@@ -216,13 +218,14 @@ export const createCard = async (someState: any, formData: FormData) => {
     frontItem: frontItem as string,
     frontPronunciation: '',
     frontExample: frontExample as string,
-    frontStatus: 0,
+    frontStatus: -1,
     backLanguage: 'English',
     backItem: backItem as string,
     backPronunciation: backPronunciation as string,
     backExample: backExample as string,
-    backStatus: 0,
+    backStatus: -1,
     userId: userId as string,
+    language: langId as string,
   };
   const newCard = await prisma.card.create({
     data: card,

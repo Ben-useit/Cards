@@ -1,4 +1,4 @@
-const jsonData = require('./dataWords3.json');
+const jsonData = require('./dataWords4.json');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -14,16 +14,16 @@ async function main() {
     if (item.frontItemType) {
       switch (item.frontItemType) {
         case 'verb':
-          wordType = ' v.';
+          wordType = ' (v.)';
           break;
         case 'adjective':
-          wordType = ' adj.';
+          wordType = ' (adj.)';
           break;
         case 'noun':
-          wordType = ' n.';
+          wordType = ' (n.)';
           break;
         case 'adverb':
-          wordType = ' adv.';
+          wordType = ' (adv.)';
           break;
         default:
           wordType = '';

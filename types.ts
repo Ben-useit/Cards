@@ -11,6 +11,7 @@ export type Card = {
   backExample?: string | null | undefined;
   backStatus: number;
   userId: string;
+  language: string;
 };
 
 export type LinkType = {

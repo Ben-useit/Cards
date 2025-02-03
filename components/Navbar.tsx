@@ -12,7 +12,7 @@ import { getMetadata } from '@/utils/metadata';
 const links: LinkType[] = [
   { label: 'Load new', url: '/options/load' },
   { label: 'Stats', url: '/options/stats' },
-  { label: 'Select Language', url: '/options/select' },
+  { label: 'Select Language1', url: '/options/select' },
   { label: 'Export Data', url: '/options/export' },
   { label: 'About', url: '/options/about' },
 ];
@@ -23,7 +23,7 @@ const Navbar = async () => {
 
   return (
     <div>
-      <nav className='grid grid-cols-[15%_70%_15%] border-b'>
+      <nav className='grid grid-cols-[15%_65%_20%] border-b'>
         <div>
           <Link href='/' title='Home'>
             <Image src={logo} alt='logo' className='pb-2' />
@@ -63,7 +63,7 @@ const Navbar = async () => {
           </div>
           <div>
             <div className='float-end'>
-              <div className='inline'>{label as string}</div>
+              <div className='hidden sm:inline text-sm'>{label as string}</div>
               <Dropdown
                 links={links}
                 className={`pb-1 ${linkStyle}`}
