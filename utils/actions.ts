@@ -87,6 +87,7 @@ export const getCards = async (repeat?: boolean) => {
     },
   });
   shuffle<Card>(cards);
+
   return cards;
 };
 
