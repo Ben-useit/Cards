@@ -1,5 +1,5 @@
 'use client';
-import { LinkType } from '@/types';
+import { LinkType } from '@/app/lib/types';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { RiArrowDropDownFill } from 'react-icons/ri';

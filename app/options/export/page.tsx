@@ -1,7 +1,7 @@
 'use client';
 import { getAllCards } from '@/utils/actions';
 import { useState, useEffect } from 'react';
-import { type Card } from '@/types';
+import { type Card } from '@/app/lib/types';
 import Loading from '@/components/Loading';
 const ExportData = () => {
   const [cards, setCards] = useState<Card[]>();

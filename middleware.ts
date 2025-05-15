@@ -1,16 +1,27 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { getSession, updateSession } from './app/lib/session';
 
-const isPublicRoutes = createRouteMatcher(['/', '/options/about']);
+const publicRoutes = ['/', '/login'];
 
-export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoutes(req)) await auth.protect();
-});
+export const middleware = async (req: NextRequest) => {
+  const pathname = req.nextUrl.pathname;
+  if (
+    pathname.startsWith('/_next') || // JS, CSS, static assets
+    pathname.startsWith('/api') || // API routes
+    pathname.startsWith('/favicon') || // Favicon
+    pathname.startsWith('/images') // Your image path (optional)
+  ) {
+    return NextResponse.next();
+  }
+  const session = await getSession();
+  const isPublicRoute = publicRoutes.includes(pathname);
 
-export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
-    '/(api|trpc)(.*)',
-  ],
+  if (isPublicRoute) {
+    return NextResponse.next();
+  }
+
+  if (!session?.user.userId) {
+    return NextResponse.redirect(new URL('/login', req.nextUrl));
+  }
+  return await updateSession();
 };

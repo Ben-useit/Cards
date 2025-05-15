@@ -1,13 +1,14 @@
-import LanguageForm from '@/components/LanguageForm';
+//import LanguageForm from '@/components/LanguageForm';
 import heroImage from '@/public/hero.svg';
 import logo from '@/public/logo2.svg';
-import { getMetadata } from '@/utils/metadata';
-import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image';
 
 export default async function Home() {
-  const { userId } = await auth();
-  const { langId } = await getMetadata(userId);
+  // const { userId } = await auth();
+  // const { langId } = await getMetadata(userId);
+
+  const userId = null;
+  const langId = null;
 
   if (!userId || (userId && langId))
     return (
@@ -23,5 +24,5 @@ export default async function Home() {
         </div>
       </div>
     );
-  if (!langId) return <LanguageForm />;
+  //if (!langId) return <LanguageForm />;
 }

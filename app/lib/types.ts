@@ -26,3 +26,22 @@ export type LanguagePair = {
   selected: boolean;
   label: string;
 };
+
+export type User = {
+  userId: string;
+  username: string;
+  activeLanguage: Language | null;
+};
+
+export type Session = {
+  user: User;
+  expires: Date;
+};
+
+export type Language = {
+  id: string;
+  firstLanguage: string;
+  secondLanguage: string;
+  label: string;
+  userId: string;
+};

@@ -3,7 +3,7 @@ import CardComponent from '@/components/Card';
 import NothingToDo from '@/components/NothingToDo';
 import { getCards } from '@/utils/actions';
 import { shuffle } from '@/utils/shuffle';
-import { type Card } from '@/types';
+import { type Card } from '@/app/lib/types';
 const LearnPage = async () => {
   const cards = await getCards();
   if (cards.length === 0) {

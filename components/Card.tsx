@@ -1,6 +1,6 @@
 'use client';
 
-import { type Card } from '@/types';
+import { type Card } from '@/app/lib/types';
 import { updateStatus, updateDate } from '@/utils/actions';
 import Link from 'next/link';
 import { useState } from 'react';

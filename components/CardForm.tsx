@@ -2,7 +2,7 @@
 import FormLabel from '@/components/FormLabel';
 import InputField from '@/components/InputField';
 import TextArea from '@/components/TextArea';
-import { Card } from '@/types';
+import { Card } from '@/app/lib/types';
 import { CiCircleCheck } from 'react-icons/ci';
 
 const CardForm = ({

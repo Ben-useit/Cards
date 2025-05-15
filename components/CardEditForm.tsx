@@ -2,7 +2,7 @@
 import FormLabel from '@/components/FormLabel';
 import InputField from '@/components/InputField';
 import TextArea from '@/components/TextArea';
-import { Card } from '@/types';
+import { Card } from '@/app/lib/types';
 import { updateCard } from '@/utils/actions';
 import { redirect } from 'next/navigation';
 import { useActionState, useEffect, useState } from 'react';

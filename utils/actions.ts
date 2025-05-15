@@ -1,86 +1,90 @@
 'use server';
-import { Card, LanguagePair } from '@/types';
+import { Card, LanguagePair } from '@/app/lib/types';
 import prisma from '@/utils/db';
 import { allStatuses } from '@/defaults';
-import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { shuffle } from '@/utils/shuffle';
-import { deleteMetadata, getMetadata, setMetadata } from './metadata';
 import { hasEmptyEntries, hasIndexDuplicates } from './validate';
+import { type Language } from '@prisma/client';
+import { getSession } from '@/app/lib/session';
 
 export type ActionState = {
   message: string;
   payload?: FormData;
 };
 
-export const setLanguage = async (
-  someState: ActionState,
-  formData: FormData
-) => {
-  const { userId } = await auth();
-  if (!userId) redirect('/');
-  const label = formData.getAll('label') as string[];
-  const id = formData.getAll('id') as string[];
-  const firstLanguage = formData.getAll('firstLanguage') as string[];
-  const secondLanguage = formData.getAll('secondLanguage') as string[];
-  const selected = formData.getAll('selected') as string[];
+// export const setLanguage = async (
+//   someState: ActionState,
+//   formData: FormData
+// ) => {
+//   const session = await getSession();
+//   if (!session) return;
+//   const userId = session.user.userId;
+//   if (!userId) redirect('/');
+//   const label = formData.getAll('label') as string[];
+//   const id = formData.getAll('id') as string[];
+//   const firstLanguage = formData.getAll('firstLanguage') as string[];
+//   const secondLanguage = formData.getAll('secondLanguage') as string[];
+//   const selected = formData.getAll('selected') as string[];
 
-  const { error, message } = hasEmptyEntries(
-    [id, label, firstLanguage, secondLanguage],
-    selected[0]
-  );
-  if (error) {
-    return { message: message, payload: formData };
-  }
+//   const { error, message } = hasEmptyEntries(
+//     [id, label, firstLanguage, secondLanguage],
+//     selected[0]
+//   );
+//   if (error) {
+//     return { message: message, payload: formData };
+//   }
 
-  const result = hasIndexDuplicates(firstLanguage, secondLanguage);
-  if (result.error) return { message: result.message, payload: formData };
+//   const result = hasIndexDuplicates(firstLanguage, secondLanguage);
+//   if (result.error) return { message: result.message, payload: formData };
 
-  const existingRecordIds = id.filter((element) => element !== '');
+//   const existingRecordIds = id.filter((element) => element !== '');
 
-  //Save the data, update existing ones, create new ones.
-  for (const [index, element] of existingRecordIds.entries()) {
-    await prisma.languagePair.update({
-      where: { id: element },
-      data: {
-        label: label[index],
-        firstLanguage: firstLanguage[index],
-        secondLanguage: secondLanguage[index],
-        selected: selected[0] === element,
-      },
-    });
-  }
+//   //Save the data, update existing ones, create new ones.
+//   for (const [index, element] of existingRecordIds.entries()) {
+//     await prisma.languagePair.update({
+//       where: { id: element },
+//       data: {
+//         label: label[index],
+//         firstLanguage: firstLanguage[index],
+//         secondLanguage: secondLanguage[index],
+//         selected: selected[0] === element,
+//       },
+//     });
+//   }
 
-  // save new entry if exists
-  const indexOfNewRecord = existingRecordIds.length;
-  if (label[indexOfNewRecord] !== '') {
-    const isSelected = selected[0] === 'new';
-    await prisma.languagePair.create({
-      data: {
-        label: label[indexOfNewRecord],
-        firstLanguage: firstLanguage[indexOfNewRecord],
-        secondLanguage: secondLanguage[indexOfNewRecord],
-        selected: isSelected,
-        userId: userId,
-      },
-    });
-  }
-  await deleteMetadata(userId);
-  redirect('/options/select');
-  //revalidatePath('/options/select');
-  return { message: 'All Ok.', payload: formData };
-};
+//   // save new entry if exists
+//   const indexOfNewRecord = existingRecordIds.length;
+//   if (label[indexOfNewRecord] !== '') {
+//     const isSelected = selected[0] === 'new';
+//     await prisma.languagePair.create({
+//       data: {
+//         label: label[indexOfNewRecord],
+//         firstLanguage: firstLanguage[indexOfNewRecord],
+//         secondLanguage: secondLanguage[indexOfNewRecord],
+//         selected: isSelected,
+//         userId: userId,
+//       },
+//     });
+//   }
+//   await deleteMetadata(userId);
+//   redirect('/options/select');
+//   return { message: 'All Ok.', payload: formData };
+// };
 
 export const getCards = async (repeat?: boolean) => {
+  const session = await getSession();
+  if (!session) return [];
+  const userId = session.user.userId;
+  const langId = session.user.activeLanguage?.id || '';
   const today = new Date();
   today.setHours(23, 59, 59, 999);
-  const { userId } = await auth();
-  if (!userId) return [];
-  const { langId } = await getMetadata(userId);
+
   const status = repeat ? { lt: 6, gte: 0 } : { equals: 0 };
   const cards: Card[] = await prisma.card.findMany({
     where: {
-      userId: userId as string,
+      userId: userId,
+
       frontStatus: status,
       frontDate: { lte: today },
       language: langId,
@@ -92,18 +96,26 @@ export const getCards = async (repeat?: boolean) => {
 };
 
 export const getAllCards = async () => {
-  const { userId } = await auth();
+  const session = await getSession();
+  if (!session) return;
+  const userId = session.user.userId;
+  const langId = session.user.activeLanguage?.id || '';
+
   const cards: Card[] = await prisma.card.findMany({
     where: {
       userId: userId as string,
+      language: langId,
     },
   });
   return cards;
 };
+
 export const getLanguages = async () => {
-  const { userId } = await auth();
-  const pairs: LanguagePair[] = await prisma.languagePair.findMany({
-    where: { userId: userId as string },
+  const session = await getSession();
+  if (!session) return;
+  const userId = session.user.userId;
+  const pairs: Language[] = await prisma.language.findMany({
+    where: { userId: userId },
   });
   return pairs;
 };
@@ -208,8 +220,10 @@ export const getStatusSummary = async () => {
 };
 
 export const createCard = async (someState: any, formData: FormData) => {
-  const { userId } = await auth();
-  const { langId } = await getMetadata(userId);
+  const session = await getSession();
+  if (!session) return;
+  const userId = session.user.userId;
+  const langId = session.user.activeLanguage?.id || '';
 
   const { frontItem, frontExample, backItem, backPronunciation, backExample } =
     Object.fromEntries(formData);
@@ -226,7 +240,7 @@ export const createCard = async (someState: any, formData: FormData) => {
     backExample: backExample as string,
     backStatus: -1,
     userId: userId as string,
-    language: langId as string,
+    language: langId,
   };
   const newCard = await prisma.card.create({
     data: card,
@@ -235,13 +249,16 @@ export const createCard = async (someState: any, formData: FormData) => {
 };
 
 export const loadNewCards = async (someState: any, formData: FormData) => {
+  const session = await getSession();
+  if (!session) return;
+  const userId = session.user.userId;
+
   const count = formData.get('count');
   if (count === null || count === '') return 'Please enter a number';
 
   const countNumber = parseInt(count as string, 10); // Safely cast to string and then parse as number
   if (isNaN(countNumber)) return 'Please enter a NUMBER';
 
-  const { userId } = await auth();
   const cardsToUpdate = await prisma.card.findMany({
     where: {
       userId: userId as string,
