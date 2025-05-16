@@ -40,7 +40,9 @@ const Card = ({
     setIsFront(true);
     if (answer) setCorrectAnswers(correctAnswers + 1);
     else setFalseAnswers(falseAnswers + 1);
-    if (repeat) updateStatus(answer, card);
+    if (repeat) {
+      updateStatus(answer, card);
+    }
     if (examplesOnly && answer) updateDate(card);
   };
 

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import logo from '@/public/logo2.svg';
 import Dropdown from './Dropdown';
 import { LinkType } from '@/app/lib/types';
+import { useAuthContext } from '@/context';
 
 const links: LinkType[] = [
   { label: 'Load new', url: '/options/load' },
@@ -14,6 +15,7 @@ const links: LinkType[] = [
 ];
 
 const Navbar = () => {
+  const { user } = useAuthContext();
   return (
     <div>
       <nav className='grid grid-cols-[15%_65%_20%] border-b'>
@@ -50,6 +52,7 @@ const Navbar = () => {
         <div>
           <div className='float-end'>
             <div className='hidden sm:inline text-sm'>{''}</div>
+            {user?.username}
             <Dropdown
               links={links}
               className={`pb-1 ${linkStyle}`}

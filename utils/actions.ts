@@ -84,11 +84,31 @@ export const getCards = async (repeat?: boolean) => {
   const cards: Card[] = await prisma.card.findMany({
     where: {
       userId: userId,
-
       frontStatus: status,
       frontDate: { lte: today },
       language: langId,
     },
+  });
+
+  const cardsReverse: Card[] = await prisma.card.findMany({
+    where: {
+      userId: userId,
+      backStatus: status,
+      backDate: { lte: today },
+      language: langId,
+    },
+  });
+
+  cardsReverse.forEach((card) => {
+    const newCard = {
+      ...card,
+      id: `${card.id}*`,
+      frontItem: card.backItem,
+      frontExample: '',
+      backItem: card.frontItem,
+      backExample: card.frontExample,
+    };
+    cards.push(newCard);
   });
   shuffle<Card>(cards);
 
@@ -132,18 +152,13 @@ export const getSelectedLanguage = async (userId: string | null) => {
 };
 
 export const updateCard = async (someState: any, formData: FormData) => {
-  const {
-    id,
-    frontItem,
-    frontExample,
-    backItem,
-    backPronunciation,
-    backExample,
-  } = Object.fromEntries(formData);
-
+  let id = formData.get('id') as string;
+  const { frontItem, frontExample, backItem, backPronunciation, backExample } =
+    Object.fromEntries(formData);
+  if (id.endsWith('*')) id = id.slice(0, -1);
   await prisma.card.update({
     where: {
-      id: id as string,
+      id: id,
     },
     data: {
       frontItem: frontItem as string,
@@ -157,7 +172,8 @@ export const updateCard = async (someState: any, formData: FormData) => {
 };
 export const updateStatus = async (response: boolean, card: Card) => {
   let today = new Date();
-  const status = card.frontStatus;
+  const reverse = card.id?.endsWith('*');
+  const status = reverse ? card.backStatus : card.frontStatus;
   const newStatus = response ? status + 1 : 0;
   switch (newStatus) {
     case 1:
@@ -176,15 +192,28 @@ export const updateStatus = async (response: boolean, card: Card) => {
       today.setDate(today.getDate() + 28);
       break;
   }
-  await prisma.card.update({
-    where: {
-      id: card.id,
-    },
-    data: {
-      frontStatus: newStatus,
-      frontDate: today,
-    },
-  });
+
+  if (reverse) {
+    await prisma.card.update({
+      where: {
+        id: card.id?.slice(0, -1),
+      },
+      data: {
+        backStatus: newStatus,
+        backDate: today,
+      },
+    });
+  } else {
+    await prisma.card.update({
+      where: {
+        id: card.id,
+      },
+      data: {
+        frontStatus: newStatus,
+        frontDate: today,
+      },
+    });
+  }
 };
 
 export const updateDate = async (card: Card) => {
