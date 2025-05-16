@@ -5,6 +5,7 @@ import logo from '@/public/logo2.svg';
 import Dropdown from './Dropdown';
 import { LinkType } from '@/app/lib/types';
 import { useAuthContext } from '@/context';
+import { useEffect } from 'react';
 
 const links: LinkType[] = [
   { label: 'Load new', url: '/options/load' },
@@ -15,60 +16,88 @@ const links: LinkType[] = [
 ];
 
 const Navbar = () => {
-  const { user } = useAuthContext();
+  const { user, currentPathname, setCurrentPathname } = useAuthContext();
+
+  useEffect(() => {
+    setCurrentPathname(window.location.pathname);
+  }, []);
+
   return (
     <div>
-      <nav className='grid grid-cols-[15%_65%_20%] border-b'>
+      <nav className='grid grid-cols-[15%_65%_20%] border-b pb-2 mb-4'>
         <div>
-          <Link href='/' title='Home'>
-            <Image src={logo} alt='logo' className='pb-2' />
-          </Link>
+          {currentPathname != '/' && (
+            <Link href='/' title='Home' onClick={() => setCurrentPathname('/')}>
+              <Image src={logo} alt='logo' />
+            </Link>
+          )}
         </div>
-        {/* <SignedIn> */}
-        <div className='mx-auto '>
-          <Link
-            href='/card/create'
-            title='Create'
-            className={`py-1 ${linkStyle}`}
-          >
-            New
-          </Link>
-          <Link
-            href='/card/learn'
-            title='Learn'
-            className={`py-1 ${linkStyle}`}
-          >
-            Learn
-          </Link>
-          <Dropdown
-            links={[
-              { label: 'Repeat Words', url: '/card/repeat' },
-              { label: 'Repeat Examples', url: '/card/repeat/examples' },
-            ]}
-            className={`pb-1 ${linkStyle}`}
-            label='Repeat'
-          />
-        </div>
+        {user ? (
+          <div className='mx-auto '>
+            <Link
+              href='/card/create'
+              title='Create'
+              className={`py-1 ${linkStyle}`}
+              onClick={() => setCurrentPathname('/card/create')}
+            >
+              New
+            </Link>
+            <Link
+              href='/card/learn'
+              title='Learn'
+              className={`py-1 ${linkStyle}`}
+              onClick={() => setCurrentPathname('/card/learn')}
+            >
+              Learn
+            </Link>
+            <Dropdown
+              links={[
+                { label: 'Repeat Words', url: '/card/repeat' },
+                { label: 'Repeat Examples', url: '/card/repeat/examples' },
+              ]}
+              className={`pb-1 ${linkStyle}`}
+              label='Repeat'
+            />
+          </div>
+        ) : (
+          <div className='mx-auto '></div>
+        )}
+
         <div>
           <div className='float-end'>
-            <div className='hidden sm:inline text-sm'>{''}</div>
-            {user?.username}
-            <Dropdown
-              links={links}
-              className={`pb-1 ${linkStyle}`}
-              AuthButton={
-                <button
-                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-                  onClick={async () => {
-                    await fetch('/api/logout', { method: 'POST' });
-                    location.reload();
-                  }}
-                >
-                  Logout
-                </button>
-                // <SignOutLink className='block px-4 py-2 text-gray-700 hover:bg-gray-100' />
-              }
-            />
+            <div className='inline '>
+              {!user && (
+                <>
+                  <Link href='/about' className={`pb-1 ${linkStyle}`}>
+                    About
+                  </Link>
+                  <Link
+                    href='/login'
+                    className={`pb-1 ${linkStyle} bg-green-600 ml-4`}
+                  >
+                    Login
+                  </Link>
+                </>
+              )}
+            </div>
+            <div className='hidden lg:inline'>{user?.username}</div>
+            {user && (
+              <Dropdown
+                links={links}
+                className={`pb-1 ${linkStyle}`}
+                AuthButton={
+                  <button
+                    className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                    onClick={async () => {
+                      await fetch('/api/logout', { method: 'POST' });
+                      location.reload();
+                    }}
+                  >
+                    Logout
+                  </button>
+                }
+              />
+            )}
           </div>
         </div>
       </nav>

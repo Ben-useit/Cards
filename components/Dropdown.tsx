@@ -1,5 +1,6 @@
 'use client';
 import { LinkType } from '@/app/lib/types';
+import { useAuthContext } from '@/context';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { RiArrowDropDownFill } from 'react-icons/ri';
@@ -16,14 +17,11 @@ const Dropdown = ({
   label?: string;
   AuthButton?: React.ReactNode;
 }) => {
+  const { setCurrentPathname } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-  };
-
-  const closeDropdown = () => {
-    setIsOpen(false);
   };
 
   return (
@@ -50,7 +48,10 @@ const Dropdown = ({
                 <Link
                   href={link.url}
                   className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-                  onClick={closeDropdown}
+                  onClick={() => {
+                    setCurrentPathname(link.url);
+                    setIsOpen(false);
+                  }}
                   key={link.label}
                 >
                   {link.label}

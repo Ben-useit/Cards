@@ -3,7 +3,6 @@ import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '@/components/Navbar';
 import { getSession } from './lib/session';
-import LoginPage from './login/page';
 import AuthProvider from '@/context';
 
 export const metadata: Metadata = {
@@ -22,14 +21,10 @@ export default async function RootLayout({
       <body className='mx-auto w-4/5 text-center mt-4'>
         <main className='mt-4'>
           <AuthProvider initialUser={session?.user}>
-            {session?.user ? (
-              <>
-                <Navbar />
-                {children}
-              </>
-            ) : (
-              <LoginPage />
-            )}
+            <>
+              <Navbar />
+              {children}
+            </>
           </AuthProvider>
         </main>
       </body>

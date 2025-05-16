@@ -8,6 +8,7 @@ import { SlArrowLeft, SlClose } from 'react-icons/sl';
 import { TfiPencilAlt } from 'react-icons/tfi';
 import ResultModal from './ResultModal';
 import { redirect } from 'next/navigation';
+import { useAuthContext } from '@/context';
 
 const Card = ({
   cards,
@@ -26,6 +27,7 @@ const Card = ({
   falseA?: number;
   examplesOnly: boolean;
 }) => {
+  const { setCurrentPathname } = useAuthContext();
   const initialShowFront = showedFront === undefined ? true : showedFront;
   const [isFront, setIsFront] = useState(initialShowFront);
   const [cardList, setCardList] = useState(cards);
@@ -83,7 +85,11 @@ const Card = ({
           </div>
 
           <div>
-            <Link href='/' className='inline float-end'>
+            <Link
+              href='/'
+              onClick={() => setCurrentPathname('/')}
+              className='inline float-end'
+            >
               <SlClose color='red' className='mt-1' />
             </Link>
             {examplesOnly || (

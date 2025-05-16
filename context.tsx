@@ -5,6 +5,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 type ContextType = {
   user: User | null;
   setUser: (user: User | null) => void;
+  currentPathname: string;
+  setCurrentPathname: (path: string) => void;
 };
 
 const AuthContext = createContext<ContextType | undefined>(undefined);
@@ -17,6 +19,7 @@ const AuthProvider = ({
   initialUser?: User | null;
 }) => {
   const [user, setUser] = useState<User | null>(initialUser);
+  const [currentPathname, setCurrentPathname] = useState<string>('/');
 
   // useEffect(() => {
   //   async function loadUser() {
@@ -34,7 +37,9 @@ const AuthProvider = ({
   // }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider
+      value={{ user, setUser, currentPathname, setCurrentPathname }}
+    >
       {children}
     </AuthContext.Provider>
   );
