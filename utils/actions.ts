@@ -6,71 +6,99 @@ import { redirect } from 'next/navigation';
 import { shuffle } from '@/utils/shuffle';
 import { hasEmptyEntries, hasIndexDuplicates } from './validate';
 import { type Language } from '@prisma/client';
-import { getSession } from '@/app/lib/session';
+import {
+  createSession,
+  deleteSession,
+  encrypt,
+  getSession,
+} from '@/app/lib/session';
 
 export type ActionState = {
   message: string;
   payload?: FormData;
 };
 
-// export const setLanguage = async (
-//   someState: ActionState,
-//   formData: FormData
-// ) => {
-//   const session = await getSession();
-//   if (!session) return;
-//   const userId = session.user.userId;
-//   if (!userId) redirect('/');
-//   const label = formData.getAll('label') as string[];
-//   const id = formData.getAll('id') as string[];
-//   const firstLanguage = formData.getAll('firstLanguage') as string[];
-//   const secondLanguage = formData.getAll('secondLanguage') as string[];
-//   const selected = formData.getAll('selected') as string[];
+export const setLanguage = async (
+  someState: ActionState,
+  formData: FormData
+) => {
+  const session = await getSession();
+  if (!session) redirect('/');
+  const userId = session.user.userId;
+  if (!userId) redirect('/');
+  const label = formData.getAll('label') as string[];
+  const id = formData.getAll('id') as string[];
+  const firstLanguage = formData.getAll('firstLanguage') as string[];
+  const secondLanguage = formData.getAll('secondLanguage') as string[];
+  let selected = formData.getAll('selected') as string[];
 
-//   const { error, message } = hasEmptyEntries(
-//     [id, label, firstLanguage, secondLanguage],
-//     selected[0]
-//   );
-//   if (error) {
-//     return { message: message, payload: formData };
-//   }
+  const { error, message } = hasEmptyEntries(
+    [id, label, firstLanguage, secondLanguage],
+    selected[0]
+  );
+  if (error) {
+    return { message: message, payload: formData };
+  }
 
-//   const result = hasIndexDuplicates(firstLanguage, secondLanguage);
-//   if (result.error) return { message: result.message, payload: formData };
+  const result = hasIndexDuplicates(firstLanguage, secondLanguage);
+  if (result.error) return { message: result.message, payload: formData };
 
-//   const existingRecordIds = id.filter((element) => element !== '');
+  const existingRecordIds = id.filter((element) => element !== '');
 
-//   //Save the data, update existing ones, create new ones.
-//   for (const [index, element] of existingRecordIds.entries()) {
-//     await prisma.languagePair.update({
-//       where: { id: element },
-//       data: {
-//         label: label[index],
-//         firstLanguage: firstLanguage[index],
-//         secondLanguage: secondLanguage[index],
-//         selected: selected[0] === element,
-//       },
-//     });
-//   }
+  //Save the data, update existing ones, create new ones.
+  for (const [index, element] of existingRecordIds.entries()) {
+    await prisma.language.update({
+      where: { id: element },
+      data: {
+        label: label[index],
+        firstLanguage: firstLanguage[index],
+        secondLanguage: secondLanguage[index],
+      },
+    });
+  }
 
-//   // save new entry if exists
-//   const indexOfNewRecord = existingRecordIds.length;
-//   if (label[indexOfNewRecord] !== '') {
-//     const isSelected = selected[0] === 'new';
-//     await prisma.languagePair.create({
-//       data: {
-//         label: label[indexOfNewRecord],
-//         firstLanguage: firstLanguage[indexOfNewRecord],
-//         secondLanguage: secondLanguage[indexOfNewRecord],
-//         selected: isSelected,
-//         userId: userId,
-//       },
-//     });
-//   }
-//   await deleteMetadata(userId);
-//   redirect('/options/select');
-//   return { message: 'All Ok.', payload: formData };
-// };
+  // save new entry if exists
+  const indexOfNewRecord = existingRecordIds.length;
+  if (
+    label[indexOfNewRecord] !== '' &&
+    firstLanguage[indexOfNewRecord] !== '' &&
+    secondLanguage[indexOfNewRecord] !== ''
+  ) {
+    const isSelected = selected[0] === 'new';
+    const lang = await prisma.language.create({
+      data: {
+        label: label[indexOfNewRecord],
+        firstLanguage: firstLanguage[indexOfNewRecord],
+        secondLanguage: secondLanguage[indexOfNewRecord],
+        userId: userId,
+      },
+    });
+    if (isSelected) {
+      selected[0] = lang.id;
+    }
+  }
+  // update Session
+  const user = session.user;
+  await deleteSession();
+
+  if (selected[0]) {
+    const language = await prisma.language.findFirst({
+      where: { id: selected[0] },
+    });
+    if (language) {
+      user.activeLanguage = language;
+      const expires = new Date(Date.now() + 60 * 60 * 1000); // 5min
+      const token = await encrypt({ user, expires });
+      await createSession({ token, expires });
+    }
+    user.userId;
+    await prisma.user.update({
+      where: { id: user.userId },
+      data: { activeLanguageId: selected[0] },
+    });
+  }
+  redirect('/options/select');
+};
 
 export const getCards = async (repeat?: boolean) => {
   const session = await getSession();
@@ -130,25 +158,14 @@ export const getAllCards = async () => {
   return cards;
 };
 
-export const getLanguages = async () => {
+export const getLanguages = async (): Promise<Language[]> => {
   const session = await getSession();
-  if (!session) return;
+  if (!session) return [];
   const userId = session.user.userId;
   const pairs: Language[] = await prisma.language.findMany({
     where: { userId: userId },
   });
   return pairs;
-};
-
-export const getSelectedLanguage = async (userId: string | null) => {
-  if (!userId) return null;
-  const language = await prisma.languagePair.findFirst({
-    where: {
-      userId: userId,
-      selected: true,
-    },
-  });
-  return language;
 };
 
 export const updateCard = async (someState: any, formData: FormData) => {
@@ -258,12 +275,12 @@ export const createCard = async (someState: any, formData: FormData) => {
     Object.fromEntries(formData);
 
   const card: Card = {
-    frontLanguage: 'German',
+    frontLanguage: session.user.activeLanguage?.firstLanguage || '',
     frontItem: frontItem as string,
     frontPronunciation: '',
     frontExample: frontExample as string,
     frontStatus: -1,
-    backLanguage: 'English',
+    backLanguage: session.user.activeLanguage?.secondLanguage || '',
     backItem: backItem as string,
     backPronunciation: backPronunciation as string,
     backExample: backExample as string,

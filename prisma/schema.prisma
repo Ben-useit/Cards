@@ -44,11 +44,11 @@ model Language {
   userId   String  
   activeForUser User? @relation("ActiveLanguage")
 }
-model LanguagePair {
-  id           String     @id @default(uuid())
-  firstLanguage String
-  secondLanguage String
-  label String @default("")
-  selected Boolean
-  userId String
-}
+// model LanguagePair {
+//   id           String     @id @default(uuid())
+//   firstLanguage String
+//   secondLanguage String
+//   label String @default("")
+//   selected Boolean
+//   userId String
+// }

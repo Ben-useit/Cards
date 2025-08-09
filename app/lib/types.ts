@@ -23,7 +23,6 @@ export type LanguagePair = {
   id: string;
   firstLanguage: string;
   secondLanguage: string;
-  selected: boolean;
   label: string;
 };
 

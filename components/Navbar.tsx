@@ -24,7 +24,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className='grid grid-cols-[15%_65%_20%] border-b pb-2 mb-4'>
+      <nav className='grid grid-cols-[15%_55%_30%] border-b pb-2 mb-4'>
         <div>
           {currentPathname != '/' && (
             <Link href='/' title='Home' onClick={() => setCurrentPathname('/')}>
@@ -81,22 +81,29 @@ const Navbar = () => {
               )}
             </div>
             <div className='hidden lg:inline'>{user?.username}</div>
+            <div className='hidden lg:inline lg:pl-4'>
+              {user?.activeLanguage?.label}
+            </div>
             {user && (
-              <Dropdown
-                links={links}
-                className={`pb-1 ${linkStyle}`}
-                AuthButton={
-                  <button
-                    className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-                    onClick={async () => {
-                      await fetch('/api/logout', { method: 'POST' });
-                      location.reload();
-                    }}
-                  >
-                    Logout
-                  </button>
-                }
-              />
+              <>
+                <Dropdown
+                  username={user.username}
+                  language={user.activeLanguage?.label || ''}
+                  links={links}
+                  className={`pb-1 ${linkStyle}`}
+                  AuthButton={
+                    <button
+                      className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
+                      onClick={async () => {
+                        await fetch('/api/logout', { method: 'POST' });
+                        location.reload();
+                      }}
+                    >
+                      Logout
+                    </button>
+                  }
+                />
+              </>
             )}
           </div>
         </div>
