@@ -10,7 +10,6 @@ import { useEffect } from 'react';
 const links: LinkType[] = [
   { label: 'Load new', url: '/options/load' },
   { label: 'Stats', url: '/options/stats' },
-  { label: 'Select Language', url: '/options/select' },
   { label: 'Export Data', url: '/options/export' },
   { label: 'About', url: '/options/about' },
 ];
@@ -82,7 +81,7 @@ const Navbar = () => {
             </div>
             <div className='hidden lg:inline'>{user?.username}</div>
             <div className='hidden lg:inline lg:pl-4'>
-              {user?.activeLanguage?.label}
+              <Link href='/options/select'>{user?.activeLanguage?.label}</Link>
             </div>
             {user && (
               <>

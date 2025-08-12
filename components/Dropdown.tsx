@@ -50,7 +50,7 @@ const Dropdown = ({
             {username}
           </div>
           <div className='block px-4 py-2 text-gray-700 font-semibold'>
-            {language}
+            <Link href='/options/select'>{language}</Link>
           </div>
           <div className='py-2'>
             {links.map((link) => {
