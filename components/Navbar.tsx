@@ -36,7 +36,7 @@ const Navbar = () => {
             <Link
               href='/card/create'
               title='Create'
-              className={`py-1 ${linkStyle}`}
+              className={`py-3 ${linkStyle}`}
               onClick={() => setCurrentPathname('/card/create')}
             >
               New
@@ -44,7 +44,7 @@ const Navbar = () => {
             <Link
               href='/card/learn'
               title='Learn'
-              className={`py-1 ${linkStyle}`}
+              className={`py-3 ${linkStyle}`}
               onClick={() => setCurrentPathname('/card/learn')}
             >
               Learn
@@ -54,7 +54,7 @@ const Navbar = () => {
                 { label: 'Repeat Words', url: '/card/repeat' },
                 { label: 'Repeat Examples', url: '/card/repeat/examples' },
               ]}
-              className={`pb-1 ${linkStyle}`}
+              className={`py-3 ${linkStyle}`}
               label='Repeat'
             />
           </div>
@@ -67,12 +67,12 @@ const Navbar = () => {
             <div className='inline '>
               {!user && (
                 <>
-                  <Link href='/about' className={`pb-1 ${linkStyle}`}>
+                  <Link href='/about' className={` py-3 ${linkStyle}`}>
                     About
                   </Link>
                   <Link
                     href='/login'
-                    className={`pb-1 ${linkStyle} bg-green-600 ml-4`}
+                    className={` ${linkStyle} bg-green-600 ml-4 py-3`}
                   >
                     Login
                   </Link>
@@ -80,7 +80,7 @@ const Navbar = () => {
               )}
             </div>
             <div className='hidden lg:inline'>{user?.username}</div>
-            <div className='hidden lg:inline lg:pl-4'>
+            <div className='hidden lg:inline lg:pl-4 pr-2'>
               <Link href='/options/select'>{user?.activeLanguage?.label}</Link>
             </div>
             {user && (
