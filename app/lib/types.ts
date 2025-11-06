@@ -44,3 +44,12 @@ export type Language = {
   label: string;
   userId: string;
 };
+
+export type CreateCardFormData = {
+  frontItem: string;
+  frontPronunciation?: string | null | undefined;
+  frontExample?: string | null | undefined;
+  backItem: string;
+  backPronunciation?: string | null | undefined;
+  backExample?: string | null | undefined;
+};
