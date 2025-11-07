@@ -24,8 +24,6 @@ export const getAIResponse = async (
   const responseText = completion.choices[0].message.content;
   if (responseText) {
     const parsedObject = extractJsonSafely(responseText);
-    // const jsonString = responseText.replace(/```json\n|```/g, '');
-    // const parsedObject = JSON.parse(jsonString);
     return parsedObject;
   }
   return {

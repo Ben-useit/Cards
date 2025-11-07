@@ -24,6 +24,22 @@ const CreateCard = () => {
     const selectedLanguage = firstLanguage
       ? language.firstLanguage
       : language.secondLanguage;
+    if (firstLanguage)
+      setFormData({
+        ...formData,
+        backItem: 'generating ....',
+        frontExample: 'generating ....',
+        backPronunciation: 'generating ....',
+        backExample: 'generating ....',
+      });
+    else
+      setFormData({
+        ...formData,
+        frontItem: 'generating ....',
+        frontExample: 'generating ....',
+        backPronunciation: 'generating ....',
+        backExample: 'generating ...',
+      });
     const response = await getAIResponse(
       value,
       [language.firstLanguage, language.secondLanguage],
@@ -49,6 +65,7 @@ const CreateCard = () => {
       });
     }
   }, [message]);
+
   return (
     <>
       <CreateCardForm
@@ -62,20 +79,9 @@ const CreateCard = () => {
         cancelAction={cancelAction}
         canceled={canceled}
         label='Create Card'
+        language={language}
       />
     </>
   );
-  // return (
-  //   <CardForm
-  //     isPending={isPending}
-  //     message={message}
-  //     formAction={formAction}
-  //     aiAction={aiAction}
-  //     formData = {formData}
-  //     cancelAction={cancelAction}
-  //     canceled={canceled}
-  //     label='Create Card'
-  //   />
-  // );
 };
 export default CreateCard;

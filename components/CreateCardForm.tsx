@@ -1,4 +1,4 @@
-import { CreateCardFormData } from '@/app/lib/types';
+import { CreateCardFormData, Language } from '@/app/lib/types';
 import { PiOpenAiLogoThin } from 'react-icons/pi';
 import { CiCircleCheck } from 'react-icons/ci';
 import { RefObject } from 'react';
@@ -14,6 +14,7 @@ const CreateCardForm = ({
   cancelAction,
   canceled,
   label,
+  language,
 }: {
   formRef: RefObject<HTMLFormElement | null>;
   message?: string | null;
@@ -25,6 +26,7 @@ const CreateCardForm = ({
   cancelAction: () => void;
   canceled: boolean;
   label: string;
+  language: Language;
 }) => {
   const inputStyle = 'border rounded-md bg-slate-100';
   const areaStyle =
@@ -32,11 +34,11 @@ const CreateCardForm = ({
 
   return (
     <>
-      <div className='mx-auto '>
+      <div className='mx-auto max-w-md'>
         <div className='text-center'>
-          <h2 className='inline'>{label}</h2>
+          <h2 className='text-3xl text-blue-700 p-4'>{label}</h2>
           {message && (
-            <h4 className='text-center text-xs text-green-500'>
+            <h4 className='text-center text-lg text-green-500'>
               {message}
               <CiCircleCheck color='green' className='inline mx-2' />
             </h4>
@@ -44,10 +46,12 @@ const CreateCardForm = ({
         </div>
 
         <form ref={formRef} action={formAction}>
-          <div className='grid grid-cols-[30%_70%] gap-4 border justify-end rounded-md p-6 shadow-xl  bg-gray-50'>
-            <h2 className='col-span-2'>Front Side</h2>
-            <label className='text-left'>Word</label>
-            <div className='flex flex-row'>
+          <div className='grid grid-cols-1 border justify-end rounded-md p-6 shadow-lg  bg-gray-50'>
+            <h2 className='text-center p-4 text-2xl font-semibold'>
+              {language.firstLanguage}
+            </h2>
+            {/* <label className='text-left border'>Word</label> */}
+            <div className='flex'>
               <input
                 type='text'
                 name='frontItem'
@@ -66,7 +70,7 @@ const CreateCardForm = ({
               </button>
             </div>
 
-            <label className='text-left'>Example</label>
+            <label className='text-left text-xl py-2'>Example:</label>
             <textarea
               name='frontExample'
               className={`${areaStyle}`}
@@ -75,9 +79,13 @@ const CreateCardForm = ({
                 setFormData({ ...formData, frontExample: e.target.value })
               }
             ></textarea>
-            <h2 className='col-span-2'>Back Side</h2>
-            <label className='text-left'>Word</label>
-            <div className='flex flex-row'>
+          </div>
+
+          <div className='grid grid-cols-1 border justify-end rounded-md p-6 shadow-lg mt-6 bg-gray-50'>
+            <h2 className='text-center p-4 text-2xl font-semibold'>
+              {language.secondLanguage}
+            </h2>
+            <div className='flex'>
               <input
                 type='text'
                 name='backItem'
@@ -96,17 +104,17 @@ const CreateCardForm = ({
               </button>
             </div>
 
-            <label className='text-left'>Pronunciation</label>
+            <label className='text-left text-xl py-2'>Pronunciation:</label>
             <input
               type='text'
               name='backPronunciation'
               value={formData.backPronunciation || ''}
-              className={`${inputStyle} pl-3`}
+              className={`${inputStyle} pl-3 min-h-[42px]`}
               onChange={(e) =>
                 setFormData({ ...formData, backPronunciation: e.target.value })
               }
             />
-            <label className='text-left'>Example</label>
+            <label className='text-left text-xl py-2'>Example:</label>
             <textarea
               name='backExample'
               className={`${areaStyle}`}
@@ -116,7 +124,7 @@ const CreateCardForm = ({
               }
             ></textarea>
           </div>
-          <div className='col-span-2 text-right pt-2'>
+          <div className='col-span-2 text-right pt-6'>
             <button
               type='submit'
               className={`rounded-md p-2  w-1/4 mr-2 ${

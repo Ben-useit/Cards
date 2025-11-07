@@ -21,24 +21,14 @@ const AuthProvider = ({
   const [user, setUser] = useState<User | null>(initialUser);
   const [currentPathname, setCurrentPathname] = useState<string>('/');
 
-  // useEffect(() => {
-  //   async function loadUser() {
-  //     try {
-  //       const res = await fetch('/api/me');
-  //       if (!res.ok) throw new Error('Not logged in');
-  //       const { user } = await res.json();
-  //       setUser(user);
-  //     } catch (err) {
-  //       setUser(null);
-  //     }
-  //   }
-
-  //   loadUser();
-  // }, []);
-
   return (
     <AuthContext.Provider
-      value={{ user, setUser, currentPathname, setCurrentPathname }}
+      value={{
+        user,
+        setUser,
+        currentPathname,
+        setCurrentPathname,
+      }}
     >
       {children}
     </AuthContext.Provider>
