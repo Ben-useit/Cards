@@ -26,14 +26,13 @@ export const setLanguage = async (
   if (!session) redirect('/');
   const userId = session.user.userId;
   if (!userId) redirect('/');
-  const label = formData.getAll('label') as string[];
   const id = formData.getAll('id') as string[];
   const firstLanguage = formData.getAll('firstLanguage') as string[];
   const secondLanguage = formData.getAll('secondLanguage') as string[];
   let selected = formData.getAll('selected') as string[];
 
   const { error, message } = hasEmptyEntries(
-    [id, label, firstLanguage, secondLanguage],
+    [id, firstLanguage, secondLanguage],
     selected[0]
   );
   if (error) {
@@ -50,7 +49,6 @@ export const setLanguage = async (
     await prisma.language.update({
       where: { id: element },
       data: {
-        label: label[index],
         firstLanguage: firstLanguage[index],
         secondLanguage: secondLanguage[index],
       },
@@ -60,14 +58,12 @@ export const setLanguage = async (
   // save new entry if exists
   const indexOfNewRecord = existingRecordIds.length;
   if (
-    label[indexOfNewRecord] !== '' &&
     firstLanguage[indexOfNewRecord] !== '' &&
     secondLanguage[indexOfNewRecord] !== ''
   ) {
     const isSelected = selected[0] === 'new';
     const lang = await prisma.language.create({
       data: {
-        label: label[indexOfNewRecord],
         firstLanguage: firstLanguage[indexOfNewRecord],
         secondLanguage: secondLanguage[indexOfNewRecord],
         userId: userId,
@@ -79,9 +75,9 @@ export const setLanguage = async (
   }
   // update Session
   const user = session.user;
-  await deleteSession();
 
   if (selected[0]) {
+    await deleteSession();
     const language = await prisma.language.findFirst({
       where: { id: selected[0] },
     });

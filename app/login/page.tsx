@@ -14,10 +14,11 @@ const LoginPage = () => {
     status: string | null | undefined,
     formData: FormData
   ) => {
-    const result = await actionLogin(status, formData);
-    if (typeof result === 'string') return result;
-    setUser(result);
-    router.push('/');
+    const user = await actionLogin(status, formData);
+    if (typeof user === 'string') return user;
+    setUser(user);
+    if (!user.activeLanguage) router.push('/options/select');
+    else router.push('/');
   };
   const [status, formAction, pending] = useActionState(handleLogin, null);
   if (pending) return <Loading message='Try to sign in ...' />;

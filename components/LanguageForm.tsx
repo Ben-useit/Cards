@@ -4,6 +4,7 @@ import { useActionState, useEffect, useState } from 'react';
 import { type Language, User } from '@/app/lib/types';
 import { type ActionState } from '@/utils/actions';
 import { useAuthContext } from '@/context';
+import { redirect } from 'next/navigation';
 
 const LanguageForm = ({
   languages,
@@ -27,8 +28,10 @@ const LanguageForm = ({
     }
   }, [actionState]);
 
-  const label =
-    (actionState?.payload?.getAll('label') as string[]) || ([] as string[]);
+  const handleClose = () => {
+    redirect('/');
+  };
+
   const firstLanguage =
     (actionState?.payload?.getAll('firstLanguage') as string[]) ||
     ([] as string[]);
@@ -38,14 +41,13 @@ const LanguageForm = ({
   const selected =
     (actionState?.payload?.getAll('selected') as string[]) ||
     (['none'] as string[]);
-  const indexOfNewRecord = label.length - 1;
-  // in case there is only a new record, select this by default
+  const indexOfNewRecord = firstLanguage.length - 1;
+
   return (
     <div className='w-auto md:w-[70%] lg:w-1/2 mx-auto  p-6 '>
       <form action={formAction}>
         <div className='grid grid-cols-4 gap-4 gap-y-4'>
           <div className='col-span-4'>{actionState?.message}</div>
-          <div className='text-left font-bold'>Label</div>
           <div className='text-left font-bold'>First Language</div>{' '}
           <div className='text-left font-bold'>Second Language</div>{' '}
           <div className='font-bold'>Selected</div>
@@ -60,11 +62,6 @@ const LanguageForm = ({
           return (
             <div className='grid grid-cols-4 gap-4 pt-4' key={item.id}>
               <input type='hidden' name='id' value={item.id} />
-              <input
-                type='text'
-                name='label'
-                defaultValue={restore ? label[index] : item.label}
-              />
               <input
                 type='text'
                 name='firstLanguage'
@@ -97,12 +94,6 @@ const LanguageForm = ({
           <input type='hidden' name='id' value='' />
           <input
             type='text'
-            name='label'
-            defaultValue={label?.[indexOfNewRecord]}
-            className='border rounded-md bg-slate-100'
-          />
-          <input
-            type='text'
             name='firstLanguage'
             defaultValue={firstLanguage?.[indexOfNewRecord]}
             className='border rounded-md bg-slate-100'
@@ -119,16 +110,23 @@ const LanguageForm = ({
             value='new'
             defaultChecked={restore ? selected[0] === 'new' : false}
           />
-          <div className='grid grid-cols-4 gap-4 pt-4'>
-            <div>
-              {' '}
-              <button
-                type='submit'
-                className='text-white w-22 border rounded-md p-2 bg-green-500'
-              >
-                Save
-              </button>
-            </div>
+        </div>
+        <div className=''>
+          <div className='flex gap-4 mt-4'>
+            <button
+              type='submit'
+              className='text-white w-20 border rounded-md p-2 bg-green-500'
+            >
+              Save
+            </button>
+
+            <button
+              type='button'
+              className='text-white w-20 border rounded-md p-2 bg-gray-500'
+              onClick={handleClose}
+            >
+              Close
+            </button>
           </div>
         </div>
       </form>

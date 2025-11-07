@@ -41,7 +41,6 @@ export type Language = {
   id: string;
   firstLanguage: string;
   secondLanguage: string;
-  label: string;
   userId: string;
 };
 

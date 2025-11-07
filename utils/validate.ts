@@ -5,7 +5,7 @@ export function hasEmptyEntries(
   error: boolean;
   message: string;
 } {
-  if (selected === '')
+  if (!selected || selected === '')
     return { error: true, message: 'At least one record must be selected.' };
   const isSelectedItem = selected === 'new';
 

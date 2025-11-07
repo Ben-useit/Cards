@@ -1,7 +1,9 @@
-import { CreateCardFormData, Language } from '@/app/lib/types';
+import { CreateCardFormData } from '@/app/lib/types';
 import { PiOpenAiLogoThin } from 'react-icons/pi';
 import { CiCircleCheck } from 'react-icons/ci';
 import { RefObject } from 'react';
+import { useAuthContext } from '@/context';
+import { getFlags } from '@/utils/flags';
 
 const CreateCardForm = ({
   formRef,
@@ -14,7 +16,6 @@ const CreateCardForm = ({
   cancelAction,
   canceled,
   label,
-  language,
 }: {
   formRef: RefObject<HTMLFormElement | null>;
   message?: string | null;
@@ -26,12 +27,12 @@ const CreateCardForm = ({
   cancelAction: () => void;
   canceled: boolean;
   label: string;
-  language: Language;
 }) => {
   const inputStyle = 'border rounded-md bg-slate-100';
   const areaStyle =
     'w-full h-32 p-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none';
-
+  const { user } = useAuthContext();
+  const flags = getFlags(user, '24px');
   return (
     <>
       <div className='mx-auto max-w-md'>
@@ -48,7 +49,7 @@ const CreateCardForm = ({
         <form ref={formRef} action={formAction}>
           <div className='grid grid-cols-1 border justify-end rounded-md p-6 shadow-lg  bg-gray-50'>
             <h2 className='text-center p-4 text-2xl font-semibold'>
-              {language.firstLanguage}
+              {flags[0]}
             </h2>
             {/* <label className='text-left border'>Word</label> */}
             <div className='flex'>
@@ -83,7 +84,7 @@ const CreateCardForm = ({
 
           <div className='grid grid-cols-1 border justify-end rounded-md p-6 shadow-lg mt-6 bg-gray-50'>
             <h2 className='text-center p-4 text-2xl font-semibold'>
-              {language.secondLanguage}
+              {flags[1]}
             </h2>
             <div className='flex'>
               <input

@@ -6,6 +6,7 @@ import Dropdown from './Dropdown';
 import { LinkType } from '@/app/lib/types';
 import { useAuthContext } from '@/context';
 import { useEffect } from 'react';
+import { getFlags } from '@/utils/flags';
 
 const links: LinkType[] = [
   { label: 'Load new', url: '/options/load' },
@@ -17,9 +18,15 @@ const links: LinkType[] = [
 const Navbar = () => {
   const { user, currentPathname, setCurrentPathname } = useAuthContext();
 
+  const flagCode = [];
+  flagCode[0] = user?.activeLanguage?.firstLanguage?.slice(0, 2) || '';
+  flagCode[1] = user?.activeLanguage?.secondLanguage?.slice(0, 2) || '';
+
   useEffect(() => {
     setCurrentPathname(window.location.pathname);
   }, []);
+
+  const flags = getFlags(user, '25px');
 
   return (
     <div>
@@ -79,15 +86,22 @@ const Navbar = () => {
                 </>
               )}
             </div>
-            <div className='hidden lg:inline'>{user?.username}</div>
-            <div className='hidden lg:inline lg:pl-4 pr-2'>
-              <Link href='/options/select'>{user?.activeLanguage?.label}</Link>
-            </div>
+            {user && (
+              <>
+                <div className='hidden lg:inline'>{user?.username}</div>
+                <div className='hidden lg:inline lg:pl-4 pr-2'>
+                  <Link href='/options/select'>
+                    {flags[0]}
+                    {flags[1]}
+                  </Link>
+                </div>
+              </>
+            )}
+
             {user && (
               <>
                 <Dropdown
-                  username={user.username}
-                  language={user.activeLanguage?.label || ''}
+                  user={user}
                   links={links}
                   className={`pb-1 ${linkStyle}`}
                   AuthButton={

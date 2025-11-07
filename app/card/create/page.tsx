@@ -79,7 +79,6 @@ const CreateCard = () => {
         cancelAction={cancelAction}
         canceled={canceled}
         label='Create Card'
-        language={language}
       />
     </>
   );

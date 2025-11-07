@@ -17,7 +17,7 @@ export const actionLogin = async (
   const user = await validatePassword(username, password);
   if (!user) return 'Wrong username or password.';
   // 2. Create token
-  const expires = new Date(Date.now() + 5 * 60 * 1000); // 5 min
+  const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 min
   const token = await encrypt({ user, expires });
 
   // 3. Create session

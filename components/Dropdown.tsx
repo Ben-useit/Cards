@@ -1,21 +1,20 @@
 'use client';
-import { LinkType } from '@/app/lib/types';
+import { LinkType, User } from '@/app/lib/types';
 import { useAuthContext } from '@/context';
+import { getFlags } from '@/utils/flags';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { SlOptionsVertical } from 'react-icons/sl';
 
 const Dropdown = ({
-  username,
-  language,
+  user,
   links,
   className,
   label,
   AuthButton,
 }: {
-  username?: string;
-  language?: string;
+  user?: User;
   links: LinkType[];
   className: string;
   label?: string;
@@ -27,7 +26,7 @@ const Dropdown = ({
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
+  const flags = getFlags(user, '35px');
   return (
     <div className='relative inline'>
       {/* Settings Icon */}
@@ -47,10 +46,13 @@ const Dropdown = ({
       {isOpen && (
         <div className='absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg text-left'>
           <div className='block px-4 py-2 text-gray-700 font-semibold'>
-            {username}
+            {user?.username}
           </div>
           <div className='block px-4 py-2 text-gray-700 font-semibold'>
-            <Link href='/options/select'>{language}</Link>
+            <Link href='/options/select'>
+              {flags[0]}
+              {flags[1]}
+            </Link>
           </div>
           <div className='py-2'>
             {links.map((link) => {

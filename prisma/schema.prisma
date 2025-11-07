@@ -39,7 +39,6 @@ model Language {
   id           String     @id @default(uuid())
   firstLanguage String
   secondLanguage String
-  label String @default("")
   user     User    @relation(fields: [userId], references: [id])
   userId   String  
   activeForUser User? @relation("ActiveLanguage")
