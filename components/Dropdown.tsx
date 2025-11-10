@@ -45,15 +45,20 @@ const Dropdown = ({
       {/* Dropdown Menu */}
       {isOpen && (
         <div className='absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg text-left'>
-          <div className='block px-4 py-2 text-gray-700 font-semibold'>
-            {user?.username}
-          </div>
-          <div className='block px-4 py-2 text-gray-700 font-semibold'>
-            <Link href='/options/select'>
-              {flags[0]}
-              {flags[1]}
-            </Link>
-          </div>
+          {user && (
+            <>
+              <div className='block px-4 py-2 text-gray-700 font-semibold'>
+                {user.username}
+              </div>
+              <div className='block px-4 py-2 text-gray-700 font-semibold'>
+                <Link href='/options/select'>
+                  {flags[0]}
+                  {flags[1]}
+                </Link>
+              </div>
+            </>
+          )}
+
           <div className='py-2'>
             {links.map((link) => {
               return (

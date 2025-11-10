@@ -1,6 +1,6 @@
 'use client';
 import { CreateCardFormData, Language } from '@/app/lib/types';
-import CreateCardForm from '@/components/CreateCardForm';
+import CardForm from '@/components/CardForm';
 import { useAuthContext } from '@/context';
 import { createCard } from '@/utils/actions';
 import { getAIResponse } from '@/utils/ai';
@@ -68,7 +68,7 @@ const CreateCard = () => {
 
   return (
     <>
-      <CreateCardForm
+      <CardForm
         formRef={formRef}
         isPending={isPending}
         message={message}
@@ -79,6 +79,7 @@ const CreateCard = () => {
         cancelAction={cancelAction}
         canceled={canceled}
         label='Create Card'
+        submitButtonLabel='create'
       />
     </>
   );

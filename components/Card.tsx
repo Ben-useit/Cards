@@ -9,6 +9,7 @@ import { TfiPencilAlt } from 'react-icons/tfi';
 import ResultModal from './ResultModal';
 import { redirect } from 'next/navigation';
 import { useAuthContext } from '@/context';
+import { getFlags } from '@/utils/flags';
 
 const Card = ({
   cards,
@@ -27,6 +28,7 @@ const Card = ({
   falseA?: number;
   examplesOnly: boolean;
 }) => {
+  const { user } = useAuthContext();
   const { setCurrentPathname } = useAuthContext();
   const initialShowFront = showedFront === undefined ? true : showedFront;
   const [isFront, setIsFront] = useState(initialShowFront);
@@ -34,6 +36,7 @@ const Card = ({
   const [card, setCard] = useState(cardList[0]);
   const [correctAnswers, setCorrectAnswers] = useState(correctA || 0);
   const [falseAnswers, setFalseAnswers] = useState(falseA || 0);
+  const flags = getFlags(user, '20px');
 
   const handleAnswer = (answer: boolean) => {
     const newCardList = cardList.filter((c) => c.id != card.id);
@@ -90,20 +93,22 @@ const Card = ({
               onClick={() => setCurrentPathname('/')}
               className='inline float-end'
             >
-              <SlClose color='red' className='mt-1' />
+              <SlClose color='red' className='mt-1 ml-2' />
             </Link>
             {examplesOnly || (
               <>
-                {' '}
                 <Link
                   href='#'
                   onClick={handleEdit}
                   className='inline  float-end'
                 >
-                  <TfiPencilAlt className='mt-1 mx-2' />
+                  <TfiPencilAlt className='mt-1 ml-2' />
                 </Link>
               </>
             )}
+            <div className='inline float-end'>
+              {isFront ? flags[0] : flags[1]}
+            </div>
           </div>
         </div>
         <div>
