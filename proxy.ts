@@ -3,7 +3,7 @@ import { getSession, updateSession } from './app/lib/session';
 
 const publicRoutes = ['/', '/login'];
 
-export const middleware = async (req: NextRequest) => {
+export const proxy = async (req: NextRequest) => {
   const pathname = req.nextUrl.pathname;
   if (
     pathname.startsWith('/_next') || // JS, CSS, static assets

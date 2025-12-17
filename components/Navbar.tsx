@@ -37,6 +37,7 @@ const Navbar = () => {
               <Image src={logo} alt='logo' />
             </Link>
           )}
+          <div className='text-blueColor'>Hier</div>
         </div>
         {user ? (
           <div className='mx-auto '>

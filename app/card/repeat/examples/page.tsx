@@ -1,5 +1,5 @@
 import Card from '@/components/Card';
-import prisma from '@/utils/db';
+import { prisma } from '@/prisma/prisma';
 import { shuffle } from '@/utils/shuffle';
 import NothingToDo from '@/components/NothingToDo';
 import { getSession } from '@/app/lib/session';

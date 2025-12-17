@@ -1,11 +1,11 @@
 'use server';
 import { Card, LanguagePair } from '@/app/lib/types';
-import prisma from '@/utils/db';
+import { prisma } from '@/prisma/prisma';
 import { allStatuses } from '@/defaults';
 import { redirect } from 'next/navigation';
 import { shuffle } from '@/utils/shuffle';
 import { hasEmptyEntries, hasIndexDuplicates } from './validate';
-import { type Language } from '@prisma/client';
+import { type Language } from '@/app/lib/types';
 import {
   createSession,
   deleteSession,

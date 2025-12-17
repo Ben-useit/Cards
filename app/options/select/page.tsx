@@ -1,6 +1,6 @@
 import { getSession } from '@/app/lib/session';
 import LanguageForm from '@/components/LanguageForm';
-import prisma from '@/utils/db';
+import { prisma } from '@/prisma/prisma';
 const LanguageSelectPage = async () => {
   const session = await getSession();
   if (!session) return;

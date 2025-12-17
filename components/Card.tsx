@@ -75,7 +75,7 @@ const Card = ({
   const remainingCards = count - (count - correctAnswers - falseAnswers) + 1;
   return (
     <>
-      <div className='w-auto md:w-[70%] lg:w-1/2 mx-auto border-2 rounded-md shadow-xl p-6 bg-gray-50'>
+      <div className='w-auto md:w-[70%] lg:w-1/2 mx-auto border rounded-md shadow-xl p-6 bg-gray-50'>
         <div className='grid grid-cols-2'>
           <div>
             {isFront || (

@@ -1,6 +1,6 @@
 'use server';
 
-import prisma from '@/utils/db';
+import { prisma } from '@/prisma/prisma';
 import { createSession } from '@/app/lib/session';
 import bcrypt from 'bcrypt';
 
