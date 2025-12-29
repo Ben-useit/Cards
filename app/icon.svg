@@ -7,8 +7,8 @@
    viewBox="0 0 13.757999 13.758"
    version="1.1"
    id="svg1"
-   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
-   sodipodi:docname="logo_circle.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="icon.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
      inkscape:document-units="mm"
      inkscape:zoom="8"
      inkscape:cx="52.4375"
-     inkscape:cy="39.125"
+     inkscape:cy="39.0625"
      inkscape:window-width="1920"
      inkscape:window-height="1019"
      inkscape:window-x="0"
@@ -51,7 +51,7 @@
        r="6.8791666"
        fill="#6c63ff"
        id="circle16"
-       style="display:inline;stroke-width:0.264583" />
+       style="display:inline;stroke-width:0.264583;fill:#155dfc;fill-opacity:1" />
     <text
        xml:space="preserve"
        style="font-size:12.7px;font-family:Madan;-inkscape-font-specification:Madan;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:43.1575;display:inline;opacity:1;fill:#6c63ff;fill-opacity:1;stroke-width:0.264583"
@@ -61,9 +61,9 @@
        inkscape:label="text white"><tspan
          x="1.9295222"
          y="11.05442"
-         id="tspan2"><tspan
+         id="tspan4"><tspan
            style="fill:#fafafa"
-           id="tspan1">Ca</tspan></tspan></text>
+           id="tspan3">Ca</tspan></tspan></text>
     <path
        id="text1"
        style="font-size:12.7px;font-family:Madan;-inkscape-font-specification:Madan;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;white-space:pre;inline-size:43.1575;display:none;opacity:1;fill:#6c63ff;fill-opacity:1;stroke-width:0.264583"

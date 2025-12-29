@@ -3,10 +3,9 @@ import { JSX } from 'react';
 import Flag from 'react-world-flags';
 
 export const getFlags = (
-  user: User | null | undefined,
+  activeLanguage: Language | null | undefined,
   height: string
 ): JSX.Element[] => {
-  const activeLanguage = user?.activeLanguage;
   if (!activeLanguage) {
     return [
       <Flag

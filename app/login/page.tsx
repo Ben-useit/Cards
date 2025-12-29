@@ -5,10 +5,8 @@ import { useRouter } from 'next/navigation';
 import heroImage from '@/public/hero.svg';
 import Image from 'next/image';
 import Loading from '@/components/Loading';
-import { useAuthContext } from '@/context';
 
 const LoginPage = () => {
-  const { setUser } = useAuthContext();
   const router = useRouter();
   const handleLogin = async (
     status: string | null | undefined,
@@ -16,7 +14,7 @@ const LoginPage = () => {
   ) => {
     const user = await actionLogin(status, formData);
     if (typeof user === 'string') return user;
-    setUser(user);
+    //setUser(user);
     if (!user.activeLanguage) router.push('/options/select');
     else router.push('/');
   };
@@ -29,7 +27,7 @@ const LoginPage = () => {
           src={heroImage}
           alt='hero'
           layout='fill'
-          quality={100}
+          quality={75}
           className='size-[50%] pt-8 mx-auto z-0'
         />
       </div>
@@ -46,12 +44,12 @@ const LoginPage = () => {
           <div className='flex-1 flex items-center justify-center mb-10 mt-10 md:mb-5'></div>
 
           {/* Login Form */}
-          <div className='flex-1 flex items-center justify-center ml-24 mt-[200px]'>
+          <div className='flex-1 flex items-center justify-center ml-24 mt-50'>
             <form
               action={formAction}
-              className='bg-[#c0bcff] bg-opacity-30 backdrop-blur-md p-8 rounded-lg shadow-md w-full max-w-sm space-y-4'
+              className='bg-gray-600 bg-opacity2-30 b1ackdrop-blur-md p-8 rounded-lg shadow-md w-full max-w-sm space-y-4'
             >
-              {status && <div className='text-[#6c63ff]'>{status}</div>}
+              {status && <div className='text-blueColor'>{status}</div>}
               <input
                 type='text'
                 placeholder='Username'
@@ -67,7 +65,7 @@ const LoginPage = () => {
               <button
                 type='submit'
                 disabled={pending}
-                className='w-full py-2 bg-white text-black font-semibold rounded opacity-80 hover:opacity-100'
+                className='w-full py-2 bg-blue-600 text-white font-semibold rounded opacity-80 hover:opacity-100'
               >
                 Sign in
               </button>

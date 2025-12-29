@@ -1,22 +1,9 @@
-import CardComponent from '@/components/Card';
+import FlipCard from '@/components/FlipCard';
 
-import NothingToDo from '@/components/NothingToDo';
-import { getCards } from '@/utils/actions';
-
-const LearnPage = async () => {
-  const cards = await getCards();
-  if (cards.length === 0) {
-    return <NothingToDo />;
-  }
-
+const LearnPage = () => {
   return (
     <div>
-      <CardComponent
-        cards={cards}
-        repeat={false}
-        count={cards.length}
-        examplesOnly={false}
-      />
+      <FlipCard />
     </div>
   );
 };

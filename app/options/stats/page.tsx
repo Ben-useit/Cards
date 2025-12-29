@@ -1,29 +1,56 @@
+import { User } from '@/app/lib/types';
 import BarChart from '@/components/BarChart';
-import { getStatusSummary } from '@/utils/actions';
+import { getStatusSummary, getStatusSummaryReverse } from '@/utils/actions';
+import { ArrowRight, Layers, FileStack } from 'lucide-react';
+import Flag from 'react-world-flags';
 
-const DashbordPage = async () => {
-  const statusData = await getStatusSummary();
-  const total = Object.values(statusData).reduce((p, n) => {
-    return p + n;
-  });
-  const countInStock = statusData['-1'] || 0;
-  const s = countInStock === 1 ? '' : 's';
-  delete statusData['-1'];
+const StatisticPage = async () => {
+  const {
+    statusData: statusDataFront,
+    language,
+    total,
+    stock,
+  } = await getStatusSummary();
+  const { statusData: statusDataReverse } = await getStatusSummaryReverse();
 
   return (
-    <div className='text-center'>
-      <h2>Cards: {total}</h2>
-      <BarChart statusData={statusData} />
-      <div className='mt-4 text-xl'>
-        {countInStock > 0 ? (
-          <p>
-            {countInStock} card{s} in stock
-          </p>
-        ) : (
-          <p>No cards in stock</p>
-        )}
+    <div className='text-center m-6'>
+      <div className='flex justify-center space-x-4'>
+        <FileStack size={40} className='inline' />
+        <span className='text-4xl'>{total}</span>
+        <Layers size={40} className='inline' />
+        <span className='text-4xl'>{stock}</span>
       </div>
+      <div className='m-6'>
+        <Flag
+          code={language?.firstLanguage}
+          fallback='--'
+          style={{ display: 'inline', padding: '2px', height: '20px' }}
+        />
+        <ArrowRight size={20} className='inline' />
+        <Flag
+          code={language?.secondLanguage}
+          fallback='--'
+          style={{ display: 'inline', padding: '2px', height: '20px' }}
+        />
+      </div>
+      <BarChart statusData={statusDataFront} />
+
+      <div className='m-6'>
+        <Flag
+          code={language?.secondLanguage}
+          fallback='--'
+          style={{ display: 'inline', padding: '2px', height: '20px' }}
+        />
+        <ArrowRight size={20} className='inline' />
+        <Flag
+          code={language?.firstLanguage}
+          fallback='--'
+          style={{ display: 'inline', padding: '2px', height: '20px' }}
+        />
+      </div>
+      <BarChart statusData={statusDataReverse} />
     </div>
   );
 };
-export default DashbordPage;
+export default StatisticPage;

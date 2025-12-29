@@ -1,14 +1,14 @@
 'use client';
 import { CreateCardFormData, Language } from '@/app/lib/types';
 import CardForm from '@/components/CardForm';
-import { useAuthContext } from '@/context';
+import { useAppSelector } from '@/store';
 import { createCard } from '@/utils/actions';
 import { getAIResponse } from '@/utils/ai';
 import { redirect } from 'next/navigation';
 import { useActionState, useRef, useState, useEffect } from 'react';
 
 const CreateCard = () => {
-  const { user } = useAuthContext();
+  const { user } = useAppSelector((state) => state.user);
   const language = user?.activeLanguage as Language;
   const [message, formAction, isPending] = useActionState(createCard, null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -69,6 +69,7 @@ const CreateCard = () => {
   return (
     <>
       <CardForm
+        user={user}
         formRef={formRef}
         isPending={isPending}
         message={message}
@@ -78,7 +79,7 @@ const CreateCard = () => {
         setFormData={setFormData}
         cancelAction={cancelAction}
         canceled={canceled}
-        label='Create Card'
+        label='New Card'
         submitButtonLabel='create'
       />
     </>

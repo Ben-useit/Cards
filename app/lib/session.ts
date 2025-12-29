@@ -2,6 +2,7 @@ import { jwtVerify, SignJWT } from 'jose';
 import { Session } from './types';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { PiClubLight } from 'react-icons/pi';
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);

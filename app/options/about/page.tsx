@@ -5,7 +5,7 @@ const AboutPage = () => {
   return (
     <div className='flex flex-col items-center mt-10'>
       <Image src={logo} alt='logo' />
-      <p>Version 0.5</p>
+      <p>Version 0.6</p>
     </div>
   );
 };

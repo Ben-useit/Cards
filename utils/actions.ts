@@ -1,5 +1,5 @@
 'use server';
-import { Card, LanguagePair } from '@/app/lib/types';
+import { Card, LanguagePair, User } from '@/app/lib/types';
 import { prisma } from '@/prisma/prisma';
 import { allStatuses } from '@/defaults';
 import { redirect } from 'next/navigation';
@@ -96,11 +96,11 @@ export const setLanguage = async (
   redirect('/options/select');
 };
 
-export const getCards = async (repeat?: boolean) => {
-  const session = await getSession();
-  if (!session) return [];
-  const userId = session.user.userId;
-  const langId = session.user.activeLanguage?.id || '';
+export const getCards = async (user: User | null, repeat?: boolean) => {
+  //const session = await getSession();
+  if (!user) return [];
+  const userId = user.userId;
+  const langId = user.activeLanguage?.id || '';
   const today = new Date();
   today.setHours(23, 59, 59, 999);
 
@@ -112,6 +112,21 @@ export const getCards = async (repeat?: boolean) => {
       frontDate: { lte: today },
       language: langId,
     },
+    select: {
+      id: true,
+      frontLanguage: true,
+      frontItem: true,
+      frontPronunciation: true,
+      frontExample: true,
+      frontStatus: true,
+      backLanguage: true,
+      backItem: true,
+      backPronunciation: true,
+      backExample: true,
+      backStatus: true,
+      userId: true,
+      language: true,
+    },
   });
 
   const cardsReverse: Card[] = await prisma.card.findMany({
@@ -121,22 +136,34 @@ export const getCards = async (repeat?: boolean) => {
       backDate: { lte: today },
       language: langId,
     },
+    select: {
+      id: true,
+      frontLanguage: true,
+      frontItem: true,
+      frontPronunciation: true,
+      frontExample: true,
+      frontStatus: true,
+      backLanguage: true,
+      backItem: true,
+      backPronunciation: true,
+      backExample: true,
+      backStatus: true,
+      userId: true,
+      language: true,
+    },
   });
 
+  const cardList: { card: Card; reverse: boolean }[] = [];
+  cards.forEach((card) => {
+    cardList.push({ card, reverse: false });
+  });
   cardsReverse.forEach((card) => {
-    const newCard = {
-      ...card,
-      id: `${card.id}*`,
-      frontItem: card.backItem,
-      frontExample: '',
-      backItem: card.frontItem,
-      backExample: card.frontExample,
-    };
-    cards.push(newCard);
+    cardList.push({ card, reverse: true });
   });
-  shuffle<Card>(cards);
 
-  return cards;
+  shuffle<{ card: Card; reverse: boolean }>(cardList);
+
+  return cardList;
 };
 
 export const getAllCards = async () => {
@@ -183,10 +210,14 @@ export const updateCard = async (someState: any, formData: FormData) => {
   });
   return Object.fromEntries(formData);
 };
-export const updateStatus = async (response: boolean, card: Card) => {
+
+export const updateStatus = async (
+  response: boolean,
+  card: Card,
+  isReverse: boolean
+) => {
   let today = new Date();
-  const reverse = card.id?.endsWith('*');
-  const status = reverse ? card.backStatus : card.frontStatus;
+  const status = isReverse ? card.backStatus : card.frontStatus;
   const newStatus = response ? status + 1 : 0;
   switch (newStatus) {
     case 1:
@@ -206,10 +237,10 @@ export const updateStatus = async (response: boolean, card: Card) => {
       break;
   }
 
-  if (reverse) {
+  if (isReverse) {
     await prisma.card.update({
       where: {
-        id: card.id?.slice(0, -1),
+        id: card.id,
       },
       data: {
         backStatus: newStatus,
@@ -241,7 +272,14 @@ export const updateDate = async (card: Card) => {
 };
 
 export const getStatusSummary = async () => {
+  const session = await getSession();
+  if (!session) return { statusData: [], total: 0, stock: 0 };
+  const user = session.user;
   const summary = await prisma.card.groupBy({
+    where: {
+      userId: user.userId,
+      language: session.user.activeLanguage?.id,
+    },
     by: ['frontStatus'],
     _count: {
       frontStatus: true,
@@ -257,8 +295,50 @@ export const getStatusSummary = async () => {
       statusData[status] = 0;
     }
   });
+  const total = Object.values(statusData).reduce((p, n) => {
+    return p + n;
+  });
+  const countInStock = statusData['-1'] || 0;
+  const s = countInStock === 1 ? '' : 's';
+  delete statusData['-1'];
 
-  return statusData;
+  return {
+    statusData,
+    language: user.activeLanguage,
+    total,
+    stock: `${countInStock}`,
+  };
+};
+
+export const getStatusSummaryReverse = async () => {
+  const session = await getSession();
+  if (!session) return { statusData: [], total: 0, stock: 0 };
+  const user = session.user;
+  const summary = await prisma.card.groupBy({
+    where: {
+      userId: user.userId,
+      language: session.user.activeLanguage?.id,
+    },
+    by: ['backStatus'],
+    _count: {
+      backStatus: true,
+    },
+  });
+
+  const statusData: { [key: number]: number } = {};
+  for (const record of summary) {
+    statusData[record.backStatus] = record._count.backStatus;
+  }
+  allStatuses.forEach((status) => {
+    if (!(status in statusData)) {
+      statusData[status] = 0;
+    }
+  });
+  delete statusData['-1'];
+
+  return {
+    statusData,
+  };
 };
 
 export const createCard = async (someState: any, formData: FormData) => {
@@ -299,7 +379,8 @@ export const loadNewCards = async (someState: any, formData: FormData) => {
   if (count === null || count === '') return 'Please enter a number';
 
   const countNumber = parseInt(count as string, 10); // Safely cast to string and then parse as number
-  if (isNaN(countNumber)) return 'Please enter a NUMBER';
+  if (isNaN(countNumber) || countNumber <= 0)
+    return 'Please enter a positiv number';
 
   const cardsToUpdate = await prisma.card.findMany({
     where: {

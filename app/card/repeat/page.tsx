@@ -1,21 +1,9 @@
-import Card from '@/components/Card';
-import NothingToDo from '@/components/NothingToDo';
-import { getCards } from '@/utils/actions';
+import FlipCard from '@/components/FlipCard';
 
-const RepeatPage = async () => {
-  const cards = await getCards(true);
-  if (cards.length === 0) {
-    return <NothingToDo />;
-  }
-
+const RepeatPage = () => {
   return (
     <div>
-      <Card
-        cards={cards}
-        repeat={true}
-        count={cards.length}
-        examplesOnly={false}
-      />
+      <FlipCard repeat={true} />
     </div>
   );
 };

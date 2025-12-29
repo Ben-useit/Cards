@@ -1,4 +1,6 @@
+import StatisticPage from '../options/stats/page';
+
 const DashBoard = () => {
-  return <div>DashBoard</div>;
+  return <StatisticPage />;
 };
 export default DashBoard;

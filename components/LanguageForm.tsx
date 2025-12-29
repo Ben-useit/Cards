@@ -3,8 +3,10 @@ import { setLanguage } from '@/utils/actions';
 import { useActionState, useEffect, useState } from 'react';
 import { type Language, User } from '@/app/lib/types';
 import { type ActionState } from '@/utils/actions';
-import { useAuthContext } from '@/context';
+//import { useAuthContext } from '@/context';
 import { redirect } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { signInUser } from '@/features/user/userSlice';
 
 const LanguageForm = ({
   languages,
@@ -14,7 +16,9 @@ const LanguageForm = ({
   user: User;
 }) => {
   const [restore, setRestore] = useState(false);
-  const { setUser } = useAuthContext();
+  //const user = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch();
+  //const { setUser } = useAuthContext();
   const initialState: ActionState = {
     message: '',
   };
@@ -24,7 +28,7 @@ const LanguageForm = ({
     if (actionState.payload) {
       setRestore(true);
     } else {
-      setUser(user);
+      dispatch(signInUser({ ...user }));
     }
   }, [actionState]);
 

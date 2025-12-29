@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@/public/logo2.svg';
 import Dropdown from './Dropdown';
-import { LinkType } from '@/app/lib/types';
-import { useAuthContext } from '@/context';
+import { LinkType, User } from '@/app/lib/types';
 import { useEffect } from 'react';
 import { getFlags } from '@/utils/flags';
+import { useAppDispatch, useAppSelector } from '@/store';
 
 const links: LinkType[] = [
   { label: 'Load new', url: '/options/load' },
@@ -16,28 +16,33 @@ const links: LinkType[] = [
 ];
 
 const Navbar = () => {
-  const { user, currentPathname, setCurrentPathname } = useAuthContext();
+  //const { user, currentPathname, setCurrentPathname } = useAuthContext();
+  const { user } = useAppSelector((state) => state.user);
+  if (!user) return; // <div>goto login</div>;
 
   const flagCode = [];
   flagCode[0] = user?.activeLanguage?.firstLanguage?.slice(0, 2) || '';
   flagCode[1] = user?.activeLanguage?.secondLanguage?.slice(0, 2) || '';
 
-  useEffect(() => {
-    setCurrentPathname(window.location.pathname);
-  }, []);
+  // useEffect(() => {
+  //   setCurrentPathname(window.location.pathname);
+  // }, []);
 
-  const flags = getFlags(user, '25px');
+  const currentPathname = '/';
+
+  const flags = getFlags(user.activeLanguage, '25px');
 
   return (
     <div>
       <nav className='grid grid-cols-[15%_55%_30%] border-b pb-2 mb-4'>
         <div>
-          {currentPathname != '/' && (
-            <Link href='/' title='Home' onClick={() => setCurrentPathname('/')}>
-              <Image src={logo} alt='logo' />
-            </Link>
-          )}
-          <div className='text-blueColor'>Hier</div>
+          <Link
+            href='/'
+            title='Home'
+            //onClick={() => setCurrentPathname('/')}
+          >
+            <Image src={logo} alt='logo' />
+          </Link>
         </div>
         {user ? (
           <div className='mx-auto '>
@@ -45,7 +50,7 @@ const Navbar = () => {
               href='/card/create'
               title='Create'
               className={`py-3 ${linkStyle}`}
-              onClick={() => setCurrentPathname('/card/create')}
+              //onClick={() => setCurrentPathname('/card/create')}
             >
               New
             </Link>
@@ -53,7 +58,7 @@ const Navbar = () => {
               href='/card/learn'
               title='Learn'
               className={`py-3 ${linkStyle}`}
-              onClick={() => setCurrentPathname('/card/learn')}
+              //onClick={() => setCurrentPathname('/card/learn')}
             >
               Learn
             </Link>
@@ -102,7 +107,9 @@ const Navbar = () => {
             {user && (
               <>
                 <Dropdown
-                  user={user}
+                  //user={user}
+                  activeLanguage={user.activeLanguage}
+                  username={user.username}
                   links={links}
                   className={`pb-1 ${linkStyle}`}
                   AuthButton={

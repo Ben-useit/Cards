@@ -1,6 +1,7 @@
 'use client';
-import { LinkType, User } from '@/app/lib/types';
-import { useAuthContext } from '@/context';
+import { Language, LinkType, User } from '@/app/lib/types';
+import { setPath } from '@/features/navigation/navigationSlice';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { getFlags } from '@/utils/flags';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -9,26 +10,31 @@ import { SlOptionsVertical } from 'react-icons/sl';
 
 const Dropdown = ({
   user,
+  activeLanguage,
+  username,
   links,
   className,
   label,
   AuthButton,
 }: {
   user?: User;
+  activeLanguage?: Language | null;
+  username?: string;
   links: LinkType[];
   className: string;
   label?: string;
   AuthButton?: React.ReactNode;
 }) => {
-  const { setCurrentPathname } = useAuthContext();
   const [isOpen, setIsOpen] = useState(false);
+  const path = useAppSelector((state) => state.navigation);
+  const dispatch = useAppDispatch();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const flags = getFlags(user, '35px');
+  const flags = getFlags(activeLanguage, '35px');
   return (
-    <div className='relative inline'>
+    <div className='relative inline z-50'>
       {/* Settings Icon */}
 
       <button onClick={toggleDropdown} className={className}>
@@ -45,10 +51,10 @@ const Dropdown = ({
       {/* Dropdown Menu */}
       {isOpen && (
         <div className='absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg text-left'>
-          {user && (
+          {username && (
             <>
               <div className='block px-4 py-2 text-gray-700 font-semibold'>
-                {user.username}
+                {username}
               </div>
               <div className='block px-4 py-2 text-gray-700 font-semibold'>
                 <Link href='/options/select'>
@@ -65,10 +71,10 @@ const Dropdown = ({
                 <Link
                   href={link.url}
                   className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-                  onClick={() => {
-                    setCurrentPathname(link.url);
-                    setIsOpen(false);
-                  }}
+                  // onClick={() => {
+                  //   dispatch(setPath({ payload: link.url })); // setCurrentPathname(link.url);
+                  //   setIsOpen(false);
+                  // }}
                   key={link.label}
                 >
                   {link.label}
