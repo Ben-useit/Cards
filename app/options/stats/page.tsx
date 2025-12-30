@@ -17,9 +17,9 @@ const StatisticPage = async () => {
     <div className='text-center m-6'>
       <div className='flex justify-center space-x-4'>
         <FileStack size={40} className='inline' />
-        <span className='text-4xl'>{total}</span>
+        <span className='text-2xl'>{total}</span>
         <Layers size={40} className='inline' />
-        <span className='text-4xl'>{stock}</span>
+        <span className='text-2xl'>{stock}</span>
       </div>
       <div className='m-6'>
         <Flag

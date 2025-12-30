@@ -45,27 +45,5 @@ export default function Home() {
     return <Loading message='Restore session ...' />;
   }
 
-  return <>Should redirect to dashboard. ...</>;
-
-  // if (!user.id)
-  //   if (pending)
-  //     return <Loading message='Signing in ...' />;
-
-  // return (
-  //   <>
-  //     <div className='relative'>
-  //       <Image src={logo} alt='logo' className='size-1/4' />
-  //       <div className='pl-14 pt-2'>
-  //         <p className='text-2xl '>Learning vocabulary made easy!!</p>
-  //         <Image
-  //           src={heroImage}
-  //           alt='hero'
-  //           className='size-[50%] pt-8 mx-auto'
-  //         />
-  //       </div>
-  //       <LoginForm formAction={formAction} />
-  //     </div>
-  //   </>
-  // );
-  //if (!langId) return <LanguageForm />;
+  return <></>;
 }

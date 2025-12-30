@@ -1,138 +1,136 @@
 'use client';
+import {
+  BookCheck,
+  BookCopy,
+  BookOpen,
+  ChartNoAxesCombined,
+  CircleQuestionMark,
+  Download,
+  FilePlusCorner,
+  FolderUp,
+  Grip,
+  LogOut,
+  Repeat2,
+  Upload,
+} from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import logo from '@/public/logo2.svg';
+import Image from 'next/image';
+import Flag from 'react-world-flags';
+import { useAppSelector } from '@/store';
 import Dropdown from './Dropdown';
-import { LinkType, User } from '@/app/lib/types';
-import { useEffect } from 'react';
-import { getFlags } from '@/utils/flags';
-import { useAppDispatch, useAppSelector } from '@/store';
+import { LinkType } from '@/app/lib/types';
 
 const links: LinkType[] = [
-  { label: 'Load new', url: '/options/load' },
-  { label: 'Stats', url: '/options/stats' },
-  { label: 'Export Data', url: '/options/export' },
-  { label: 'About', url: '/options/about' },
+  {
+    icon: <Upload className='inline' />,
+    label: 'Load new',
+    url: '/options/load',
+  },
+  {
+    icon: <ChartNoAxesCombined className='inline' />,
+    label: 'Stats',
+    url: '/options/stats',
+  },
+  {
+    icon: <Download className='inline' />,
+    label: 'Export Data',
+    url: '/options/export',
+  },
+  {
+    icon: <CircleQuestionMark className='inline' />,
+    label: 'About',
+    url: '/options/about',
+  },
 ];
 
 const Navbar = () => {
-  //const { user, currentPathname, setCurrentPathname } = useAuthContext();
   const { user } = useAppSelector((state) => state.user);
-  if (!user) return; // <div>goto login</div>;
-
-  const flagCode = [];
-  flagCode[0] = user?.activeLanguage?.firstLanguage?.slice(0, 2) || '';
-  flagCode[1] = user?.activeLanguage?.secondLanguage?.slice(0, 2) || '';
-
-  // useEffect(() => {
-  //   setCurrentPathname(window.location.pathname);
-  // }, []);
-
-  const currentPathname = '/';
-
-  const flags = getFlags(user.activeLanguage, '25px');
-
   return (
-    <div>
-      <nav className='grid grid-cols-[15%_55%_30%] border-b pb-2 mb-4'>
-        <div>
-          <Link
-            href='/'
-            title='Home'
-            //onClick={() => setCurrentPathname('/')}
-          >
-            <Image src={logo} alt='logo' />
+    <>
+      <nav className='flex justify-between'>
+        <div className='flex items-center'>
+          <Link href={'/'}>
+            <Image src={logo} alt='Cards Logo' />
           </Link>
         </div>
         {user ? (
-          <div className='mx-auto '>
-            <Link
-              href='/card/create'
-              title='Create'
-              className={`py-3 ${linkStyle}`}
-              //onClick={() => setCurrentPathname('/card/create')}
-            >
-              New
+          <div className='flex items-center gap-0.5 sm:gap-2'>
+            <Link href='/card/create' className='group'>
+              <div className='shadow-md hover:shadow-lg group-hover:text-white group-hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md '>
+                <FilePlusCorner className='inline' />
+              </div>
             </Link>
-            <Link
-              href='/card/learn'
-              title='Learn'
-              className={`py-3 ${linkStyle}`}
-              //onClick={() => setCurrentPathname('/card/learn')}
-            >
-              Learn
+            <Link href='/card/learn' className='group'>
+              <div className='shadow-md hover:shadow-lg group-hover:text-white group-hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md '>
+                <BookCopy className='inline' />
+              </div>
             </Link>
             <Dropdown
               links={[
-                { label: 'Repeat Words', url: '/card/repeat' },
-                { label: 'Repeat Examples', url: '/card/repeat/examples' },
+                {
+                  icon: <BookCheck className='inline' />,
+                  label: 'Words',
+                  url: '/card/repeat',
+                },
+                {
+                  icon: <BookOpen className='inline' />,
+                  label: 'Examples',
+                  url: '/card/repeat/examples',
+                },
               ]}
-              className={`py-3 ${linkStyle}`}
+              className={`shadow-md hover:shadow-lg hover:text-white hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md `}
               label='Repeat'
+              icon={<Repeat2 className='inline' />}
             />
           </div>
         ) : (
-          <div className='mx-auto '></div>
+          <div></div>
         )}
 
-        <div>
-          <div className='float-end'>
-            <div className='inline '>
-              {!user && (
-                <>
-                  <Link href='/about' className={` py-3 ${linkStyle}`}>
-                    About
-                  </Link>
-                  <Link
-                    href='/login'
-                    className={` ${linkStyle} bg-green-600 ml-4 py-3`}
-                  >
-                    Login
-                  </Link>
-                </>
-              )}
-            </div>
-            {user && (
-              <>
-                <div className='hidden lg:inline'>{user?.username}</div>
-                <div className='hidden lg:inline lg:pl-4 pr-2'>
-                  <Link href='/options/select'>
-                    {flags[0]}
-                    {flags[1]}
-                  </Link>
-                </div>
-              </>
-            )}
-
-            {user && (
-              <>
-                <Dropdown
-                  //user={user}
-                  activeLanguage={user.activeLanguage}
-                  username={user.username}
-                  links={links}
-                  className={`pb-1 ${linkStyle}`}
-                  AuthButton={
-                    <button
-                      className='block px-4 py-2 text-gray-700 hover:bg-gray-100'
-                      onClick={async () => {
-                        await fetch('/api/logout', { method: 'POST' });
-                        location.reload();
-                      }}
-                    >
-                      Logout
-                    </button>
-                  }
-                />
-              </>
-            )}
+        <div className='flex justify-end items-center w-36 gap-2 '>
+          <div className='flex-col  justify-between'>
+            <Flag
+              code={user?.activeLanguage?.firstLanguage}
+              style={{ width: '20px', display: 'block', padding: '1px' }}
+            />
+            <Flag
+              code={user?.activeLanguage?.secondLanguage}
+              style={{ width: '20px', display: 'block', padding: '1px' }}
+            />
           </div>
+
+          {user && (
+            <>
+              <Dropdown
+                //activeLanguage={user.activeLanguage}
+                username={user.username}
+                links={links}
+                className={`shadow-md hover:shadow-lg hover:text-white hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md `}
+                icon={<Grip className='inline' />}
+                AuthButton={
+                  <>
+                    <div className='border-b my-1.5'></div>
+                    <div className=' group w-full  hover:bg-red-600 transition-colors duration-200'>
+                      <LogOut className='inline' />
+                      <button
+                        className='inline px-4 cursor-pointer  text-gray-900 group-hover:text-white transition-colors duration-200'
+                        onClick={async () => {
+                          await fetch('/api/logout', { method: 'POST' });
+                          location.reload();
+                        }}
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </>
+                }
+              />
+            </>
+          )}
         </div>
       </nav>
-    </div>
+    </>
   );
 };
-
 export default Navbar;
-
-const linkStyle = 'px-3 rounded-md hover:bg-blueColor hover:text-white';

@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 export type Card = {
   id?: string;
   frontLanguage: string;
@@ -15,6 +17,7 @@ export type Card = {
 };
 
 export type LinkType = {
+  icon: ReactElement;
   label: string;
   url: string;
 };
