@@ -54,7 +54,7 @@ const Navbar = () => {
             <Image src={logo} alt='Cards Logo' />
           </Link>
         </div>
-        {user ? (
+        {/* {user ? (
           <div className='flex items-center gap-0.5 sm:gap-2'>
             <Link href='/card/create' className='group'>
               <div className='shadow-md hover:shadow-lg group-hover:text-white group-hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md '>
@@ -86,19 +86,57 @@ const Navbar = () => {
           </div>
         ) : (
           <div></div>
-        )}
+        )} */}
 
-        <div className='flex justify-end items-center w-36 gap-2 '>
-          <div className='flex-col  justify-between'>
+        <div className='flex justify-end items-center w-k40 gap-2 '>
+          {/* <div className='sm:flex  items-center hidden'>
             <Flag
               code={user?.activeLanguage?.firstLanguage}
-              style={{ width: '20px', display: 'block', padding: '1px' }}
+              style={{
+                height: '24px',
+                display: 'inline',
+                padding: '0 5px 0 0',
+              }}
             />
+
             <Flag
               code={user?.activeLanguage?.secondLanguage}
-              style={{ width: '20px', display: 'block', padding: '1px' }}
+              style={{ height: '24px', display: 'inline' }}
             />
-          </div>
+          </div> */}
+          {user ? (
+            <div className='flex items-center gap-0.5 sm:gap-2'>
+              <Link href='/card/create' className='group'>
+                <div className='shadow-md hover:shadow-lg group-hover:text-white group-hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md '>
+                  <FilePlusCorner className='inline' />
+                </div>
+              </Link>
+              <Link href='/card/learn' className='group'>
+                <div className='shadow-md hover:shadow-lg group-hover:text-white group-hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md '>
+                  <BookCopy className='inline' />
+                </div>
+              </Link>
+              <Dropdown
+                links={[
+                  {
+                    icon: <BookCheck className='inline' />,
+                    label: 'Words',
+                    url: '/card/repeat',
+                  },
+                  {
+                    icon: <BookOpen className='inline' />,
+                    label: 'Examples',
+                    url: '/card/repeat/examples',
+                  },
+                ]}
+                className={`shadow-md hover:shadow-lg hover:text-white hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md `}
+                label='Repeat'
+                icon={<Repeat2 className='inline' />}
+              />
+            </div>
+          ) : (
+            <div></div>
+          )}
 
           {user && (
             <>
