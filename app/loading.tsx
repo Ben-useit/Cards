@@ -1,7 +1,7 @@
-const loading = () => {
+const Loading = ({ message }: { message: string }) => {
   return (
     <div>
-      <div className='text-center'>
+      <div className='text-center my-28'>
         <div role='status'>
           <svg
             aria-hidden='true'
@@ -19,10 +19,11 @@ const loading = () => {
               fill='currentFill'
             />
           </svg>
-          <span className='sr-only'>Loading...</span>
+          <span className='sr-only'>{message}</span>
+          <span className='block m-4'>{message ? message : 'Loading ...'}</span>
         </div>
       </div>
     </div>
   );
 };
-export default loading;
+export default Loading;

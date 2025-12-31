@@ -3,7 +3,7 @@ import FlipCard from '@/components/FlipCard';
 const LearnPage = () => {
   return (
     <div>
-      <FlipCard />
+      <FlipCard redirectTo='/card/learn' />
     </div>
   );
 };

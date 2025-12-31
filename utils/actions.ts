@@ -193,9 +193,15 @@ export const getLanguages = async (): Promise<Language[]> => {
 
 export const updateCard = async (someState: any, formData: FormData) => {
   let id = formData.get('id') as string;
-  const { frontItem, frontExample, backItem, backPronunciation, backExample } =
-    Object.fromEntries(formData);
-  if (id.endsWith('*')) id = id.slice(0, -1);
+  const {
+    frontItem,
+    frontExample,
+    frontPronunciation,
+    backItem,
+    backPronunciation,
+    backExample,
+  } = Object.fromEntries(formData);
+
   await prisma.card.update({
     where: {
       id: id,
@@ -203,12 +209,13 @@ export const updateCard = async (someState: any, formData: FormData) => {
     data: {
       frontItem: frontItem as string,
       frontExample: frontExample as string,
+      frontPronunciation: frontPronunciation as string,
       backItem: backItem as string,
       backPronunciation: backPronunciation as string,
       backExample: backExample as string,
     },
   });
-  return Object.fromEntries(formData);
+  return `"Card with id ${id}" updated.`;
 };
 
 export const updateStatus = async (

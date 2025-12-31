@@ -5,6 +5,7 @@ import {
   handleFalseAnswer,
   reset,
   setIsFlipped,
+  setRedirectTo,
 } from '@/features/card/cardSlice';
 import { useAppDispatch, useAppSelector } from '@/store';
 import {
@@ -15,8 +16,12 @@ import {
   X,
   ArrowRight,
   Loader,
+  ClosedCaptionIcon,
+  SquareX,
+  SquarePen,
+  SquareArrowLeft,
 } from 'lucide-react';
-import Loading from './Loading';
+import Loading from '@/app/loading';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -24,7 +29,13 @@ import NothingToDo from './NothingToDo';
 import Flag from 'react-world-flags';
 import { updateStatus } from '@/utils/actions';
 
-const FlipCard = ({ repeat }: { repeat?: boolean }) => {
+const FlipCard = ({
+  repeat,
+  redirectTo,
+}: {
+  repeat?: boolean;
+  redirectTo: string;
+}) => {
   const {
     cards,
     total,
@@ -36,11 +47,12 @@ const FlipCard = ({ repeat }: { repeat?: boolean }) => {
     complete,
   } = useAppSelector((state) => state.card);
   const { user } = useAppSelector((state) => state.user);
+
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const handleFlip = () => {
-    dispatch(setIsFlipped());
+  const handleFlip = (flip = true) => {
+    dispatch(setIsFlipped(flip));
   };
 
   const renderResults = () => (
@@ -70,8 +82,9 @@ const FlipCard = ({ repeat }: { repeat?: boolean }) => {
   useEffect(() => {
     if (ran.current) return;
     ran.current = true;
-    if (user) {
+    if (user && !cards) {
       dispatch(fetchUserCards({ user, repeat }));
+      dispatch(setRedirectTo({ redirectTo }));
     }
   }, [user, dispatch]);
 
@@ -90,6 +103,32 @@ const FlipCard = ({ repeat }: { repeat?: boolean }) => {
     if (repeat) {
       updateStatus(answer, card, isReverse);
     }
+  };
+
+  const EditCancelButtons = ({ backIcon }: { backIcon?: boolean }) => {
+    return (
+      <>
+        {' '}
+        <div className='absolute top-3.5 right-3.5'>
+          {backIcon && (
+            <Link href={'#'} onClick={() => handleFlip(false)}>
+              <SquareArrowLeft className='inline' />
+            </Link>
+          )}
+          <Link href={'/card/edit'}>
+            <SquarePen className='inline' />
+          </Link>
+          <Link
+            href={'/'}
+            onClick={() => {
+              dispatch(reset());
+            }}
+          >
+            <SquareX className='inline' color='#ff0000' />
+          </Link>
+        </div>
+      </>
+    );
   };
 
   return (
@@ -114,6 +153,7 @@ const FlipCard = ({ repeat }: { repeat?: boolean }) => {
         >
           {/* Front Side */}
           <div className='absolute w-full h-full bg-white rounded-xl shadow-2xl p-8 flex flex-col justify-center items-center backface-hidden'>
+            <EditCancelButtons />
             <p className='text-sm text-gray-500 mb-4'>
               <Flag
                 code={isReverse ? card.backLanguage : card.frontLanguage}
@@ -138,6 +178,7 @@ const FlipCard = ({ repeat }: { repeat?: boolean }) => {
 
           {/* Back Side */}
           <div className='absolute w-full h-full bg-white rounded-xl shadow-2xl p-8 flex flex-col justify-center items-center transform-[rotateY(180deg)] backface-hidden'>
+            <EditCancelButtons backIcon={true} />
             <p className='text-sm text-gray-500 mb-4'>
               {isFlipped && (
                 <Flag
@@ -163,15 +204,15 @@ const FlipCard = ({ repeat }: { repeat?: boolean }) => {
                 "{isReverse ? card.frontExample : card.backExample}"
               </p>
             )}
-            {card.backPronunciation && (
-              <p
-                className={`text-lg text-gray-400 mt-2 ${
-                  !isFlipped && 'text-white'
-                }`}
-              >
-                [{isReverse ? card.frontPronunciation : card.backPronunciation}]
-              </p>
-            )}
+            {/* {card.backPronunciation && ( */}
+            <p
+              className={`text-lg text-gray-400 mt-2 ${
+                !isFlipped && 'text-white'
+              }`}
+            >
+              [{isReverse ? card.backPronunciation : card.backPronunciation}]
+            </p>
+            {/* )} */}
           </div>
         </div>
       </div>
@@ -180,7 +221,7 @@ const FlipCard = ({ repeat }: { repeat?: boolean }) => {
       <div className='flex justify-center space-x-4'>
         {!isFlipped ? (
           <button
-            onClick={handleFlip}
+            onClick={() => handleFlip()}
             className='w-full p-4 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 text-lg font-bold flex items-center justify-center space-x-2'
           >
             <span>Show Answer</span>

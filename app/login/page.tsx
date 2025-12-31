@@ -14,12 +14,11 @@ const LoginPage = () => {
   ) => {
     const user = await actionLogin(status, formData);
     if (typeof user === 'string') return user;
-    //setUser(user);
     if (!user.activeLanguage) router.push('/options/select');
     else router.push('/');
   };
   const [status, formAction, pending] = useActionState(handleLogin, null);
-  if (pending) return <Loading message='Try to sign in ...' />;
+
   return (
     <div className='relative min-h-screen'>
       <div className='pl-14 pt-2'>
@@ -49,7 +48,7 @@ const LoginPage = () => {
               action={formAction}
               className='bg-gray-600 bg-opacity2-30 b1ackdrop-blur-md p-8 rounded-lg shadow-md w-full max-w-sm space-y-4'
             >
-              {status && <div className='text-blueColor'>{status}</div>}
+              {status && <div className='text-red-400'>{status}</div>}
               <input
                 type='text'
                 placeholder='Username'
@@ -67,7 +66,7 @@ const LoginPage = () => {
                 disabled={pending}
                 className='w-full py-2 bg-blue-600 text-white font-semibold rounded opacity-80 hover:opacity-100'
               >
-                Sign in
+                {pending ? 'submitting ...' : 'Sign in'}
               </button>
             </form>
           </div>

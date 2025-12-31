@@ -3,7 +3,7 @@ import FlipCard from '@/components/FlipCard';
 const RepeatPage = () => {
   return (
     <div>
-      <FlipCard repeat={true} />
+      <FlipCard redirectTo='/card/repeat' repeat={true} />
     </div>
   );
 };

@@ -27,6 +27,7 @@ type CardSlice = {
   currentCardIndex: number;
   isFlipped: boolean;
   complete: boolean;
+  redirectTo: string;
 };
 
 const initialState: CardSlice = {
@@ -39,6 +40,7 @@ const initialState: CardSlice = {
   currentCardIndex: 0,
   isFlipped: false,
   complete: false,
+  redirectTo: '/',
 };
 
 const cardSlice = createSlice({
@@ -54,6 +56,7 @@ const cardSlice = createSlice({
       state.currentCardIndex = 0;
       state.isFlipped = false;
       state.complete = false;
+      state.redirectTo = payload.redirectTo;
     },
     handleCorrectAnswer: (state) => {
       if (state.currentCardIndex + 1 === state.total) state.complete = true;
@@ -69,9 +72,52 @@ const cardSlice = createSlice({
       state.currentCardIndex = state.currentCardIndex + 1;
       state.isFlipped = false;
     },
-    setIsFlipped: (state) => {
-      state.isFlipped = true;
+    setIsFlipped: (state, { payload }) => {
+      state.isFlipped = payload;
     },
+    setRedirectTo: (state, { payload }) => {
+      state.redirectTo = payload.redirectTo;
+    },
+    modifyCard: (state, { payload }) => {
+      if (!state.cards) return;
+
+      const index = state.currentCardIndex;
+      if (index === undefined || index < 0 || index >= state.cards.length)
+        return;
+
+      let otherIndex: number | undefined = undefined;
+
+      // There might be another card
+      const cards = state.cards;
+
+      if (cards[index]) {
+        const targetId = state.cards[index].card.id;
+        const indexes = cards
+          .map((item, i) => (item.card.id === targetId ? i : null))
+          .filter((i) => i !== null);
+        otherIndex = indexes.filter((i) => i != index)?.at(0);
+      }
+
+      // Merge the existing card with the payload
+      state.cards[index] = {
+        ...state.cards[index],
+        card: {
+          ...state.cards[index].card,
+          ...payload, // overwrite only the fields provided in payload
+        },
+      };
+
+      if (otherIndex) {
+        state.cards[otherIndex] = {
+          ...state.cards[otherIndex],
+          card: {
+            ...state.cards[otherIndex].card,
+            ...payload, // overwrite only the fields provided in payload
+          },
+        };
+      }
+    },
+
     reset: (state) => {
       state.total = 0;
       state.correctAnswers = 0;
@@ -81,6 +127,7 @@ const cardSlice = createSlice({
       state.currentCardIndex = 0;
       state.isFlipped = false;
       state.complete = false;
+      state.redirectTo = '/';
     },
   },
   extraReducers: (builder) => {
@@ -109,6 +156,8 @@ export const {
   handleCorrectAnswer,
   handleFalseAnswer,
   setIsFlipped,
+  setRedirectTo,
+  modifyCard,
   reset,
 } = cardSlice.actions;
 export default cardSlice.reducer;
