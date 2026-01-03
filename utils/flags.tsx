@@ -1,4 +1,4 @@
-import { Language, User } from '@/app/lib/types';
+import { Language, User } from '@/lib/types';
 import { JSX } from 'react';
 import Flag from 'react-world-flags';
 

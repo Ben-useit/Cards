@@ -1,10 +1,17 @@
 'use client';
-import { Language, LinkType, User } from '@/app/lib/types';
+import { Language, User } from '@/lib/types';
 import { Languages } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { RiArrowDropDownFill } from 'react-icons/ri';
 import { SlOptionsVertical } from 'react-icons/sl';
+import { ReactElement } from 'react';
+
+export type LinkType = {
+  icon: ReactElement;
+  label: string;
+  url: string;
+};
 
 const Dropdown = ({
   user,
@@ -78,9 +85,12 @@ const Dropdown = ({
           )}
 
           <div className=''>
-            {links.map((link) => {
+            {links.map((link, index) => {
               return (
-                <div className='block group w-full  hover:bg-blue-600 transition-colors duration-200'>
+                <div
+                  key={index}
+                  className='block group w-full  hover:bg-blue-600 transition-colors duration-200'
+                >
                   {link.icon}
                   <Link
                     href={link.url}

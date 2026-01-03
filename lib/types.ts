@@ -1,5 +1,3 @@
-import { ReactElement } from 'react';
-
 export type Card = {
   id?: string;
   frontLanguage: string;
@@ -14,19 +12,6 @@ export type Card = {
   backStatus: number;
   userId: string;
   language: string;
-};
-
-export type LinkType = {
-  icon: ReactElement;
-  label: string;
-  url: string;
-};
-
-export type LanguagePair = {
-  id: string;
-  firstLanguage: string;
-  secondLanguage: string;
-  label: string;
 };
 
 export type User = {
@@ -46,12 +31,21 @@ export type Language = {
   secondLanguage: string;
   userId: string;
 };
-
-export type CreateCardFormData = {
+//FormDataEntryValue;
+export type CardFormData = {
   frontItem: string;
-  frontPronunciation?: string | null | undefined;
-  frontExample?: string | null | undefined;
+  frontPronunciation?: string;
+  frontExample?: string;
   backItem: string;
-  backPronunciation?: string | null | undefined;
-  backExample?: string | null | undefined;
+  backPronunciation?: string;
+  backExample?: string;
 };
+
+// export type CardFormData = {
+//   frontItem: FormDataEntryValue;
+//   frontPronunciation?: FormDataEntryValue | string | null;
+//   frontExample?: FormDataEntryValue | string | null;
+//   backItem: FormDataEntryValue;
+//   backPronunciation?: FormDataEntryValue | string | null;
+//   backExample?: FormDataEntryValue | string | null;
+// };

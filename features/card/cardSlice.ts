@@ -1,6 +1,6 @@
-import { Card, Language, User } from '@/app/lib/types';
-import { getCards } from '@/utils/actions';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { Card, User } from '@/lib/types';
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
+import { getCardsAction } from '@/actions/card';
 
 export const fetchUserCards = createAsyncThunk(
   'user/fetchCards',
@@ -9,7 +9,7 @@ export const fetchUserCards = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await getCards(user, repeat);
+      const response = await getCardsAction({ repeat });
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -18,7 +18,7 @@ export const fetchUserCards = createAsyncThunk(
 );
 
 type CardSlice = {
-  cards: { card: Card; reverse: boolean }[] | null;
+  cards: null | { card: Card; reverse: boolean }[];
   correctAnswers: number;
   falseAnswers: number;
   total: number;
@@ -28,6 +28,7 @@ type CardSlice = {
   isFlipped: boolean;
   complete: boolean;
   redirectTo: string;
+  sessionId: string;
 };
 
 const initialState: CardSlice = {
@@ -41,6 +42,7 @@ const initialState: CardSlice = {
   isFlipped: false,
   complete: false,
   redirectTo: '/',
+  sessionId: '',
 };
 
 const cardSlice = createSlice({
@@ -55,8 +57,9 @@ const cardSlice = createSlice({
       state.left = payload.length;
       state.currentCardIndex = 0;
       state.isFlipped = false;
+      state.isLoading = false;
       state.complete = false;
-      state.redirectTo = payload.redirectTo;
+      state.sessionId = nanoid();
     },
     handleCorrectAnswer: (state) => {
       if (state.currentCardIndex + 1 === state.total) state.complete = true;

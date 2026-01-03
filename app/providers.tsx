@@ -3,7 +3,7 @@
 import { Provider } from 'react-redux';
 import { AppStore, makeStore, store } from '@/store';
 import { useRef } from 'react';
-import { User } from './lib/types';
+import { User } from '@/lib/types';
 import { signInUser } from '@/features/user/userSlice';
 
 export function Providers({

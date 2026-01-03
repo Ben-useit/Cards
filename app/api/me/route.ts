@@ -2,7 +2,7 @@
 
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { decrypt } from '@/app/lib/session'; // assuming your decrypt function is here
+import { decrypt } from '@/lib/auth'; // assuming your decrypt function is here
 
 export async function GET() {
   const cookie = (await cookies()).get('session')?.value;

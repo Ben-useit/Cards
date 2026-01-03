@@ -1,6 +1,5 @@
-import { User } from '@/app/lib/types';
 import BarChart from '@/components/BarChart';
-import { getStatusSummary, getStatusSummaryReverse } from '@/utils/actions';
+import { getStatusSummary, getStatusSummaryReverse } from '@/actions/card';
 import { ArrowRight, Layers, FileStack } from 'lucide-react';
 import Flag from 'react-world-flags';
 

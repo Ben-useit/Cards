@@ -6,12 +6,10 @@ import {
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '@/features/user/userSlice';
 import cardReducer from '@/features/card/cardSlice';
-import navigationReducer from '@/features/navigation/navigationSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    navigation: navigationReducer,
     card: cardReducer,
   },
 });

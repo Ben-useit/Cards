@@ -1,15 +1,8 @@
-import { getSession } from '@/app/lib/session';
 import LanguageForm from '@/components/LanguageForm';
-import { prisma } from '@/prisma/prisma';
-const LanguageSelectPage = async () => {
-  const session = await getSession();
-  if (!session) return;
 
-  const languages = await prisma.language.findMany({
-    where: {
-      userId: session.user.userId,
-    },
-  });
-  return <LanguageForm languages={languages} user={session.user} />;
+import { getLanguagePairs } from '@/lib/api/language';
+const LanguageSelectPage = async () => {
+  const languages = await getLanguagePairs();
+  return <LanguageForm languages={languages} />;
 };
 export default LanguageSelectPage;

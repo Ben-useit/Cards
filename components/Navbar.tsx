@@ -19,7 +19,7 @@ import Image from 'next/image';
 import Flag from 'react-world-flags';
 import { useAppSelector } from '@/store';
 import Dropdown from './Dropdown';
-import { LinkType } from '@/app/lib/types';
+import { LinkType } from '@/components/Dropdown';
 
 const links: LinkType[] = [
   {

@@ -1,11 +1,11 @@
 'use server';
 
 import { prisma } from '@/prisma/prisma';
-import { createSession } from '@/app/lib/session';
+import { createSession } from '@/lib/auth';
 import bcrypt from 'bcrypt';
 
-import { encrypt } from '../lib/session';
-import { User } from '../lib/types';
+import { encrypt } from '@/lib/auth';
+import { User } from '@/lib/types';
 
 export const actionLogin = async (
   status: string | null | undefined,
@@ -17,11 +17,11 @@ export const actionLogin = async (
   const user = await validatePassword(username, password);
   if (!user) return 'Wrong username or password.';
   // 2. Create token
-  const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 min
-  const token = await encrypt({ user, expires });
+  // const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 min
+  // const token = await encrypt({ user, expires });
 
   // 3. Create session
-  await createSession({ token, expires });
+  await createSession({ user });
   return user;
 };
 

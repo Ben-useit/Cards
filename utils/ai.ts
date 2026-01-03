@@ -1,5 +1,5 @@
 'use server';
-import { CreateCardFormData } from '@/app/lib/types';
+import { CardFormData } from '@/lib/types';
 import OpenAI from 'openai';
 import { extractJsonSafely } from './json';
 
@@ -7,7 +7,7 @@ export const getAIResponse = async (
   word: string,
   lang: [string, string],
   selLanguage: string
-): Promise<CreateCardFormData> => {
+): Promise<CardFormData> => {
   const prompt = `${selLanguage} word: ${word} \
     give back json:\
     {  frontItem: ${lang[0]} word,\

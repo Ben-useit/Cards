@@ -1,4 +1,4 @@
-import { Language, User } from '@/app/lib/types';
+import { Language, User } from '@/lib/types';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const showMe = createAsyncThunk('/users', async (_, thunkAPI) => {
@@ -38,6 +38,7 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(showMe.fulfilled, (state, action) => {
+        console.log('show me fullfilled', action.payload);
         const { user } = action.payload;
         if (user) {
           state.user = user;

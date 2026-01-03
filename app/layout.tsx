@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '@/components/Navbar';
-import { getSession } from './lib/session';
+import { getSession } from '@/lib/auth';
 import { Providers } from './providers';
 export const metadata: Metadata = {
   title: 'Cards',

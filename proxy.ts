@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSession, updateSession } from './app/lib/session';
+import { getSession, updateSession } from '@/lib/auth';
 
 const publicRoutes = ['/', '/login'];
 
@@ -13,15 +13,17 @@ export const proxy = async (req: NextRequest) => {
   ) {
     return NextResponse.next();
   }
-  const session = await getSession();
+
   const isPublicRoute = publicRoutes.includes(pathname);
 
   if (isPublicRoute) {
     return NextResponse.next();
   }
 
+  const session = await getSession();
+
   if (!session?.user.userId) {
     return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
-  return await updateSession();
+  return await updateSession(session.user);
 };

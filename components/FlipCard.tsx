@@ -1,40 +1,38 @@
 'use client';
 import {
-  fetchUserCards,
   handleCorrectAnswer,
   handleFalseAnswer,
   reset,
+  setCards,
   setIsFlipped,
   setRedirectTo,
 } from '@/features/card/cardSlice';
 import { useAppDispatch, useAppSelector } from '@/store';
 import {
-  Plus,
-  Brain,
-  Repeat,
   Check,
   X,
   ArrowRight,
-  Loader,
-  ClosedCaptionIcon,
   SquareX,
   SquarePen,
   SquareArrowLeft,
 } from 'lucide-react';
-import Loading from '@/app/loading';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import NothingToDo from './NothingToDo';
 import Flag from 'react-world-flags';
-import { updateStatus } from '@/utils/actions';
+import { updateStatusAction } from '@/actions/card';
+import { Card } from '@/lib/types';
 
 const FlipCard = ({
+  data,
   repeat,
   redirectTo,
+  examplesOnly,
 }: {
+  data: { card: Card; reverse: boolean }[] | null;
   repeat?: boolean;
   redirectTo: string;
+  examplesOnly?: boolean;
 }) => {
   const {
     cards,
@@ -46,7 +44,6 @@ const FlipCard = ({
     isLoading,
     complete,
   } = useAppSelector((state) => state.card);
-  const { user } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -80,18 +77,16 @@ const FlipCard = ({
   const ran = useRef(false);
 
   useEffect(() => {
-    if (ran.current) return;
-    ran.current = true;
-    if (user && !cards) {
-      dispatch(fetchUserCards({ user, repeat }));
+    // if (ran.current) return;
+    // ran.current = true;
+    if (data) {
+      dispatch(setCards(data));
       dispatch(setRedirectTo({ redirectTo }));
     }
-  }, [user, dispatch]);
+  }, []);
 
-  if (isLoading) return <Loading message='Loading Cards'></Loading>;
-  if (!cards) return <></>;
-  if (total === 0) return <NothingToDo />;
   if (complete) return renderResults();
+  if (!cards) return;
 
   const card = cards[currentCardIndex].card;
   const isReverse = cards[currentCardIndex].reverse;
@@ -101,7 +96,7 @@ const FlipCard = ({
     if (answer) dispatch(handleCorrectAnswer());
     else dispatch(handleFalseAnswer());
     if (repeat) {
-      updateStatus(answer, card, isReverse);
+      updateStatusAction(answer, card, isReverse);
     }
   };
 
@@ -162,7 +157,7 @@ const FlipCard = ({
               />
             </p>
             <h2 className='text-5xl font-bold mb-4'>
-              {isReverse ? card.backItem : card.frontItem}
+              {!examplesOnly && (isReverse ? card.backItem : card.frontItem)}
             </h2>
             {card.frontExample && (
               <p className='text-lg text-gray-600'>
@@ -171,7 +166,9 @@ const FlipCard = ({
             )}
             {card.frontPronunciation && (
               <p className='text-lg text-gray-400 mt-2'>
-                [{isReverse ? card.backPronunciation : card.frontPronunciation}]
+                {!examplesOnly && [
+                  isReverse ? card.backPronunciation : card.frontPronunciation,
+                ]}
               </p>
             )}
           </div>
@@ -193,9 +190,9 @@ const FlipCard = ({
                 !isFlipped && 'text-white'
               }`}
             >
-              {isReverse ? card.frontItem : card.backItem}
+              {!examplesOnly && (isReverse ? card.frontItem : card.backItem)}
             </h2>
-            {card.backExample && (
+            {
               <p
                 className={`text-lg text-gray-600 ${
                   !isFlipped && 'text-white'
@@ -203,14 +200,16 @@ const FlipCard = ({
               >
                 "{isReverse ? card.frontExample : card.backExample}"
               </p>
-            )}
+            }
             {/* {card.backPronunciation && ( */}
             <p
               className={`text-lg text-gray-400 mt-2 ${
                 !isFlipped && 'text-white'
               }`}
             >
-              [{isReverse ? card.backPronunciation : card.backPronunciation}]
+              {!examplesOnly && [
+                isReverse ? card.backPronunciation : card.backPronunciation,
+              ]}
             </p>
             {/* )} */}
           </div>

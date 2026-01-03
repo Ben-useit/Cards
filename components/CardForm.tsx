@@ -1,4 +1,4 @@
-import { Card, CreateCardFormData, User } from '@/app/lib/types';
+import { Card, CardFormData, User } from '@/lib/types';
 import { PiOpenAiLogoThin } from 'react-icons/pi';
 import { CiCircleCheck } from 'react-icons/ci';
 import { RefObject } from 'react';
@@ -25,8 +25,8 @@ const CardForm = ({
   message?: string | null;
   formAction: (payload: FormData) => void;
   isPending: boolean;
-  formData: CreateCardFormData;
-  setFormData: (arg: CreateCardFormData) => void;
+  formData: CardFormData;
+  setFormData: (arg: CardFormData) => void;
   aiAction?: (value: string, firstLanguage: boolean) => void;
   cancelAction: () => void;
   canceled: boolean;
@@ -150,23 +150,7 @@ const CardForm = ({
           </div>
           <div className='flex justify-center space-x-4 mb-4'>
             <button
-              type='submit'
-              disabled={isPending}
-              // className={`rounded-md p-2  w-1/4 ${
-              //   isPending ? 'bg-gray-200' : 'bg-green-400'
-              // } `}
-              className={`w-1/2 my-2 p-4 ${
-                isPending ? 'bg-gray-200' : 'bg-blue-600'
-              } text-white rounded-lg shadow-lg hover:bg-blue-700 text-lg font-bold flex items-center justify-center space-x-2`}
-            >
-              {isPending && !canceled ? '...processing' : submitButtonLabel}
-            </button>
-
-            <button
               type='button'
-              // className={`rounded-md p-2  w-1/4 mr-2 ${
-              //   isPending ? 'bg-gray-200' : 'bg-red-400'
-              // } `}
               className={`w-1/2 my-2  p-4 ${
                 isPending ? 'bg-gray-200' : 'bg-red-600'
               } text-white rounded-lg shadow-lg hover:bg-red-700 text-lg font-bold flex items-center justify-center space-x-2`}
@@ -174,6 +158,15 @@ const CardForm = ({
               disabled={isPending}
             >
               {isPending && canceled ? '...cancelling2' : 'cancel'}
+            </button>
+            <button
+              type='submit'
+              disabled={isPending}
+              className={`w-1/2 my-2 p-4 ${
+                isPending ? 'bg-gray-200' : 'bg-blue-600'
+              } text-white rounded-lg shadow-lg hover:bg-blue-700 text-lg font-bold flex items-center justify-center space-x-2`}
+            >
+              {isPending && !canceled ? '...processing' : submitButtonLabel}
             </button>
           </div>
         </div>

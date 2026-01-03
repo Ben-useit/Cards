@@ -1,40 +1,24 @@
-//import Card from '@/components/Card';
-// import { prisma } from '@/prisma/prisma';
-// import { shuffle } from '@/utils/shuffle';
-// import NothingToDo from '@/components/NothingToDo';
-// import { getSession } from '@/app/lib/session';
+import { getCardsAction } from '@/actions/card';
+import FlipCard from '@/components/FlipCard';
+import NothingToDo from '@/components/NothingToDo';
 
-const RepeatExamplesPage = async () => {
-  return <div>RepeatExamplePage</div>;
-  // const today = new Date();
-  // today.setHours(0, 0, 0, 0);
-  // const session = await getSession();
-  // if (!session) return <NothingToDo />;
-
-  // const userId = session.user.userId;
-  // const languageId = session.user.activeLanguage?.id || '';
-
-  // const cards: Card[] = await prisma.card.findMany({
-  //   where: {
-  //     userId: userId,
-  //     frontStatus: { gte: 6 },
-  //     frontDate: { lte: today },
-  //     language: languageId,
-  //   },
-  // });
-  // if (cards.length === 0) {
-  //   return <NothingToDo />;
-  // }
-  // shuffle<Card>(cards);
-  // return (
-  //   <div>
-  //     <Card
-  //       cards={cards}
-  //       repeat={false}
-  //       count={cards.length}
-  //       examplesOnly={true}
-  //     />
-  //   </div>
-  // );
+const RepeatExamplesPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ session: string }>;
+}) => {
+  const { session } = await searchParams;
+  let cards = null;
+  if (!session) {
+    cards = await getCardsAction({ repeat: true });
+    if (cards.length === 0) return <NothingToDo />;
+  }
+  return (
+    <FlipCard
+      data={cards}
+      redirectTo='/card/repeat/examples'
+      examplesOnly={true}
+    />
+  );
 };
 export default RepeatExamplesPage;

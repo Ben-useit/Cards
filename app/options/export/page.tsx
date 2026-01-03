@@ -1,16 +1,7 @@
-'use client';
-import { getAllCards } from '@/utils/actions';
-import { useState, useEffect } from 'react';
-import { type Card } from '@/app/lib/types';
 import Loading from '@/components/Loading';
-const ExportData = () => {
-  const [cards, setCards] = useState<Card[]>();
-
-  useEffect(() => {
-    getAllCards().then((result) => {
-      setCards(result);
-    });
-  }, []);
+import { getAllCardsAction } from '@/actions/card';
+const ExportData = async () => {
+  const cards = await getAllCardsAction();
 
   if (!cards) return <Loading message={'preparing data ...'} />;
 

@@ -3,10 +3,9 @@ import { useAppDispatch, useAppSelector } from '@/store';
 
 import { useRouter } from 'next/navigation';
 import { useActionState, useEffect } from 'react';
-import { actionLogin } from '@/app/login/action';
 import { showMe, signInUser } from '@/features/user/userSlice';
 import Loading from '@/components/Loading';
-import DashbordPage from './options/stats/page';
+import { actionLogin } from '@/actions/login';
 
 export default function Home() {
   const router = useRouter();
