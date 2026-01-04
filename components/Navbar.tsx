@@ -4,6 +4,7 @@ import {
   BookCopy,
   BookOpen,
   ChartNoAxesCombined,
+  CirclePile,
   CircleQuestionMark,
   Download,
   FilePlusCorner,
@@ -127,6 +128,11 @@ const Navbar = () => {
                     icon: <BookOpen className='inline' />,
                     label: 'Examples',
                     url: '/card/repeat/examples',
+                  },
+                  {
+                    icon: <CirclePile className='inline' />,
+                    label: 'Stocked',
+                    url: '/card/repeat/stocked',
                   },
                 ]}
                 className={`shadow-md hover:shadow-lg hover:text-white hover:bg-blue-600 transition-colors duration-200 p-0.5 sm:p-2 border border-white group-hover:border rounded-md `}

@@ -30,11 +30,15 @@ export const updateCardAction = async (someState: any, formData: FormData) => {
 export const updateStatusAction = async (
   response: boolean,
   card: Card,
-  isReverse: boolean
+  isReverse: boolean,
+  isStocked?: boolean
 ) => {
   let today = new Date();
   const status = isReverse ? card.backStatus : card.frontStatus;
-  const newStatus = response ? status + 1 : 0;
+  let newStatus = 0;
+  if (isStocked && response) {
+    newStatus = 6;
+  } else if (!isStocked && response) newStatus = status + 1;
   switch (newStatus) {
     case 1:
       today.setDate(today.getDate() + 1);
@@ -50,6 +54,9 @@ export const updateStatusAction = async (
       break;
     case 5:
       today.setDate(today.getDate() + 28);
+      break;
+    case 6:
+      today.setDate(today.getDate() + 1);
       break;
   }
   updateStatus({
@@ -169,13 +176,26 @@ export const getAllCardsAction = async () => {
   return await getAllCards({ userId, languageId });
 };
 
-export const getCardsAction = async ({ repeat }: { repeat?: boolean }) => {
+export const getCardsAction = async ({
+  repeat,
+  stocked,
+}: {
+  repeat?: boolean;
+  stocked?: boolean;
+}) => {
   const session = await requireSession();
   const user = session.user;
 
   const langId = user.activeLanguage?.id || '';
   const today = new Date();
   today.setHours(23, 59, 59, 999);
+
+  if (stocked)
+    return await getStockedCards({
+      userId: user.userId,
+      langId: langId,
+      date: today,
+    });
 
   const status = repeat ? { lt: 6, gte: 0 } : { equals: 0 };
   const cards = await getCards({
@@ -249,5 +269,42 @@ export const getCardsAction = async ({ repeat }: { repeat?: boolean }) => {
 
   shuffle<{ card: Card; reverse: boolean }>(cardList);
 
+  return cardList;
+};
+
+export const getStockedCards = async ({
+  userId,
+  langId,
+  date,
+}: {
+  userId: string;
+  langId: string;
+  date: Date;
+}) => {
+  const nCards = 10; // TODO: ask how many to grap?
+  const cards = await getCards({
+    userId: userId,
+    languageId: langId,
+    date: date,
+    status: { equals: 6 },
+    isFront: true,
+    take: nCards,
+  });
+  const cardsReverse = await getCards({
+    userId: userId,
+    languageId: langId,
+    date: date,
+    status: { equals: 6 },
+    isFront: false,
+    take: nCards,
+  });
+  const cardList: { card: Card; reverse: boolean }[] = [];
+  cards.forEach((card) => {
+    cardList.push({ card, reverse: false });
+  });
+  cardsReverse.forEach((card) => {
+    cardList.push({ card, reverse: true });
+  });
+  shuffle<{ card: Card; reverse: boolean }>(cardList);
   return cardList;
 };

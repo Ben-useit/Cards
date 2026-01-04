@@ -143,12 +143,14 @@ export const getCards = async ({
   status,
   date,
   isFront,
+  take,
 }: {
   userId: string;
   languageId: string | undefined;
   status: { lt: number; gte: number } | { equals: number };
   date: Date;
   isFront: boolean;
+  take?: number;
 }) => {
   const statusField = isFront ? 'frontStatus' : 'backStatus';
   const dateField = isFront ? 'frontDate' : 'backDate';
@@ -174,6 +176,10 @@ export const getCards = async ({
       userId: true,
       language: true,
     },
+    orderBy: {
+      [dateField]: 'asc',
+    },
+    take: take,
   });
   return cards;
 };

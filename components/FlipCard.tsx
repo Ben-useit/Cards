@@ -28,11 +28,13 @@ const FlipCard = ({
   repeat,
   redirectTo,
   examplesOnly,
+  stocked,
 }: {
   data: { card: Card; reverse: boolean }[] | null;
   repeat?: boolean;
   redirectTo: string;
   examplesOnly?: boolean;
+  stocked: boolean;
 }) => {
   const {
     cards,
@@ -95,8 +97,8 @@ const FlipCard = ({
   const handleReview = (answer: boolean) => {
     if (answer) dispatch(handleCorrectAnswer());
     else dispatch(handleFalseAnswer());
-    if (repeat) {
-      updateStatusAction(answer, card, isReverse);
+    if (repeat || stocked) {
+      updateStatusAction(answer, card, isReverse, stocked);
     }
   };
 
