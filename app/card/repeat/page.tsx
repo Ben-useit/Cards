@@ -13,6 +13,6 @@ const RepeatPage = async ({
     cards = await getCardsAction({ repeat: true });
     if (cards.length === 0) return <NothingToDo />;
   }
-  return <FlipCard data={cards} redirectTo='/card/repeat' />;
+  return <FlipCard data={cards} redirectTo='/card/repeat' repeat={true} />;
 };
 export default RepeatPage;

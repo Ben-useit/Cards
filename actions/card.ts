@@ -52,7 +52,6 @@ export const updateStatusAction = async (
       today.setDate(today.getDate() + 28);
       break;
   }
-
   updateStatus({
     isReverse,
     cardId: card.id as string,
