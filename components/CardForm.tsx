@@ -3,6 +3,7 @@ import { PiOpenAiLogoThin } from 'react-icons/pi';
 import { CiCircleCheck } from 'react-icons/ci';
 import { RefObject } from 'react';
 import { getFlags } from '@/utils/flags';
+import { StandardButton, SubmitButton } from './controls/buttons';
 
 const CardForm = ({
   user,
@@ -149,25 +150,11 @@ const CardForm = ({
             </div>
           </div>
           <div className='flex justify-center space-x-4 mb-4'>
-            <button
-              type='button'
-              className={`w-1/2 my-2  p-4 ${
-                isPending ? 'bg-gray-200' : 'bg-red-600'
-              } text-white rounded-lg shadow-lg hover:bg-red-700 text-lg font-bold flex items-center justify-center space-x-2`}
-              onClick={cancelAction}
-              disabled={isPending}
-            >
-              {isPending && canceled ? '...cancelling2' : 'cancel'}
-            </button>
-            <button
-              type='submit'
-              disabled={isPending}
-              className={`w-1/2 my-2 p-4 ${
-                isPending ? 'bg-gray-200' : 'bg-blue-600'
-              } text-white rounded-lg shadow-lg hover:bg-blue-700 text-lg font-bold flex items-center justify-center space-x-2`}
-            >
-              {isPending && !canceled ? '...processing' : submitButtonLabel}
-            </button>
+            <StandardButton
+              onClickAction={() => cancelAction()}
+              isPending={isPending}
+            />
+            <SubmitButton isPending={isPending} />
           </div>
         </div>
       </form>

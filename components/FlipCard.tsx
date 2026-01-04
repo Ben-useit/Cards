@@ -34,7 +34,7 @@ const FlipCard = ({
   repeat?: boolean;
   redirectTo: string;
   examplesOnly?: boolean;
-  stocked: boolean;
+  stocked?: boolean;
 }) => {
   const {
     cards,

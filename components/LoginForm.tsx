@@ -4,6 +4,8 @@ import { actionLogin } from '@/actions/login';
 import { useRouter } from 'next/navigation';
 import heroImage from '@/public/hero.svg';
 import Image from 'next/image';
+import { SubmitButton } from './controls/buttons';
+import InputField from './controls/inputs';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -45,28 +47,16 @@ const LoginForm = () => {
           <div className='flex-1 flex items-center justify-center ml-24 mt-50'>
             <form
               action={formAction}
-              className='bg-gray-600 bg-opacity2-30 b1ackdrop-blur-md p-8 rounded-lg shadow-md w-full max-w-sm space-y-4'
+              className='bg-gray-600 bg-opacity2-30 backdrop-blur-md p-8 rounded-lg shadow-md w-full max-w-sm space-y-4'
             >
               {status && <div className='text-red-400'>{status}</div>}
-              <input
-                type='text'
-                placeholder='Username'
-                name='username'
-                className='w-full px-4 py-2 rounded bg-white bg-opacity-70 focus:outline-none'
-              />
-              <input
-                type='password'
-                placeholder='Password'
+              <InputField name='username' placeholder='Username' />
+              <InputField
                 name='password'
-                className='w-full px-4 py-2 rounded bg-white bg-opacity-70 focus:outline-none'
+                placeholder='Password'
+                type='password'
               />
-              <button
-                type='submit'
-                disabled={pending}
-                className='w-full py-2 bg-blue-600 text-white font-semibold rounded opacity-80 hover:opacity-100'
-              >
-                {pending ? 'submitting ...' : 'Sign in'}
-              </button>
+              <SubmitButton isPending={pending} label='Sign In' />
             </form>
           </div>
         </div>

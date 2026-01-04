@@ -6,23 +6,25 @@ export const InputField = ({
   style,
   defaultValue,
   readOnly,
+  type,
 }: {
   name: string;
   placeholder?: string;
   style?: string;
   defaultValue?: string;
   readOnly?: boolean;
+  type?: 'text' | 'password' | 'number';
 }) => {
   return (
     <input
-      type='text'
+      type={type || 'text'}
       name={name}
       readOnly={readOnly}
       disabled={readOnly}
       defaultValue={defaultValue}
       placeholder={placeholder}
       //value={formData.frontPronunciation || ''}
-      className={`border rounded-md bg-slate-100 pl-3 w-full mt-4 ${
+      className={`border h-rounded-md bg-slate-100 pl-3 w-full mt-4 ${
         style ? style : 'h-18.5'
       }`}
       //   onChange={(e) =>
@@ -52,14 +54,7 @@ export const RadioField = ({
       value={value}
       placeholder={placeholder}
       defaultChecked={defaultChecked}
-      //value={formData.frontPronunciation || ''}
       className={`border rounded-md bg-slate-100 pl-3 w-full h-9 mt-4`}
-      //   onChange={(e) =>
-      //     setFormData({
-      //       ...formData,
-      //       frontPronunciation: e.target.value,
-      //     })
-      //   }
     />
   );
 };

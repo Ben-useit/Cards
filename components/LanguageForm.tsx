@@ -5,7 +5,7 @@ import { setLanguageAction, type ActionState } from '@/actions/language';
 import { redirect, useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { signInUser } from '@/features/user/userSlice';
-import SubmitButton from './controls/buttons';
+import { StandardButton, SubmitButton } from './controls/buttons';
 import InputField, { RadioField } from './controls/inputs';
 
 const LanguageForm = ({ languages }: { languages: Language[] }) => {
@@ -74,109 +74,16 @@ const LanguageForm = ({ languages }: { languages: Language[] }) => {
               })}
 
               <div className='flex justify-center space-x-4 my-8'>
-                <button
-                  type='button'
-                  className={`w-1/2 my-2  p-4 ${
-                    isPending ? 'bg-gray-200' : 'bg-red-600'
-                  } text-white rounded-lg shadow-lg hover:bg-red-700 text-lg font-bold flex items-center justify-center space-x-2`}
-                  onClick={cancelAction}
-                  disabled={isPending}
-                >
-                  cancel
-                </button>
+                <StandardButton
+                  isPending={isPending}
+                  onClickAction={() => cancelAction()}
+                />
                 <SubmitButton isPending={isPending} />
               </div>
             </form>
           </div>
         </div>
       </div>
-      {/* <div className='w-auto md:w-[70%] lg:w-1/2 mx-auto  p-6 '>
-        <form>
-          <div className='grid grid-cols-4 gap-4 gap-y-4'>
-            <div className='col-span-4'>{actionState?.message}</div>
-            <div className='text-left font-bold'>First Language</div>{' '}
-            <div className='text-left font-bold'>Second Language</div>{' '}
-            <div className='font-bold'>Selected</div>
-          </div>
-          {languages.map((item, index) => {
-            let isSelectedItem = false;
-            if (restore) {
-              isSelectedItem = item.id === selected[0];
-            } else {
-              isSelectedItem = item.id === user?.activeLanguage?.id;
-            }
-            return (
-              <div className='grid grid-cols-4 gap-4 pt-4' key={item.id}>
-                <input type='hidden' name='id' value={item.id} />
-                <input
-                  type='text'
-                  name='firstLanguage'
-                  defaultValue={
-                    restore ? firstLanguage[index] : item.firstLanguage
-                  }
-                />
-
-                <input
-                  type='text'
-                  name='secondLanguage'
-                  defaultValue={
-                    restore ? secondLanguage[index] : item.secondLanguage
-                  }
-                />
-                <input
-                  type='radio'
-                  name='selected'
-                  value={item.id}
-                  defaultChecked={isSelectedItem}
-                />
-              </div>
-            );
-          })}
-    
-          <div className='grid grid-cols-4 gap-4 pt-4'>
-            <div className='col-span-4 text-left'>Add a new language:</div>
-          </div>
-          <div className='grid grid-cols-4 gap-4 pt-4'>
-            <input type='hidden' name='id' value='' />
-            <input
-              type='text'
-              name='firstLanguage'
-              defaultValue={firstLanguage?.[indexOfNewRecord]}
-              className='border rounded-md bg-slate-100'
-            />
-            <input
-              type='text'
-              name='secondLanguage'
-              defaultValue={secondLanguage?.[indexOfNewRecord]}
-              className='border rounded-md bg-slate-100'
-            />
-            <input
-              type='radio'
-              name='selected'
-              value='new'
-              defaultChecked={restore ? selected[0] === 'new' : false}
-            />
-          </div>
-          <div className=''>
-            <div className='flex gap-4 mt-4'>
-              <button
-                type='submit'
-                className='text-white w-20 border rounded-md p-2 bg-green-500'
-              >
-                Save
-              </button>
-
-              <button
-                type='button'
-                className='text-white w-20 border rounded-md p-2 bg-gray-500'
-                onClick={handleClose}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </form>
-      </div> */}
     </>
   );
 };
