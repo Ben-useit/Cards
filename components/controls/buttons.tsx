@@ -29,9 +29,11 @@ export const StandardButton = ({
 export const SubmitButton = ({
   label,
   isPending,
+  style,
 }: {
   label?: string;
   isPending: boolean;
+  style?: string;
 }) => {
   return (
     <button
@@ -39,7 +41,7 @@ export const SubmitButton = ({
       disabled={isPending}
       className={`w-1/2 my-2 p-4 ${
         isPending ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'
-      } text-white rounded-lg shadow-lg  text-lg font-bold flex items-center justify-center space-x-2`}
+      } text-white rounded-lg shadow-lg  text-lg font-bold flex items-center justify-center space-x-2 ${style}`}
     >
       {/* {isPending && !canceled ? '...processing' : submitButtonLabel} */}
       {isPending ? <Loading /> : label || 'Submit'}

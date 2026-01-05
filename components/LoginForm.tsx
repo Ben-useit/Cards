@@ -56,7 +56,11 @@ const LoginForm = () => {
                 placeholder='Password'
                 type='password'
               />
-              <SubmitButton isPending={pending} label='Sign In' />
+              <SubmitButton
+                isPending={pending}
+                label='Sign In'
+                style='w-full'
+              />
             </form>
           </div>
         </div>
